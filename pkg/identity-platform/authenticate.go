@@ -2,10 +2,11 @@ package platform
 
 import (
 	"fmt"
-	"go.uber.org/zap"
 	"net/http"
 	"securebanking-test-data-initializer/pkg/common"
 	"securebanking-test-data-initializer/pkg/types"
+
+	"go.uber.org/zap"
 )
 
 func GetCookieNameFromAm() string {
@@ -39,8 +40,8 @@ func FromUserSession(cookieName string) *common.Session {
 	resp, err := restClient.R().
 		SetHeader("Accept", "application/json").
 		SetHeader("Accept-API-Version", "resource=2.0, protocol=1.0").
-		SetHeader("X-OpenAM-Username", common.Config.Users.CdmAdminUsername).
-		SetHeader("X-OpenAM-Password", common.Config.Users.CdmAdminPassword).
+		SetHeader("X-OpenAM-Username", common.Config.Users.FrPlatformAdminUsername).
+		SetHeader("X-OpenAM-Password", common.Config.Users.FrPlatformAdminPassword).
 		Post(path)
 
 	common.RaiseForStatus(err, resp.Error(), resp.StatusCode())

@@ -93,45 +93,10 @@ There are a variables used before load the configuration file and these variable
 | Environment variable           | default                        | description                                  |
 |--------------------------------|--------------------------------|----------------------------------------------|
 | `HOSTS.IDENTITY_PLATFORM_FQDN` | iam.dev.forgerock.financial    | Identity platform Full Qualified Domain Name |
-| `HOSTS.IG_FQDN`                | obdemo.dev.forgerock.financial | Ig Full Qualified Domain Name                |
-| `HOSTS.RCS_FQDN`               | rcs.dev.forgerock.financial    | RSC Full Qualified Domain Name               |
-| `HOSTS.RS_FQDN`                | rs.dev.forgerock.financial     | RS Full Qualified Domain Name                |
-| `HOSTS.RCS_UI_FQDN`            | rcs-ui.dev.forgerock.financial | RCS UI Full Qualified Domain Name            |
+| `HOSTS.RS_FQDN`                | rs.dev.forgerock.financial     | RS Full Qualified Domain Name                |           |
 | `HOSTS.SCHEME`                 | https                          | URI scheme, Syntax part of a generic URI     |
 </details>
 
-**IG variables**
-<details>
-<summary>Table</summary>
-<!-- always an empty line before table -->
-
-| Environment variable   | default               | description                                |
-|------------------------|-----------------------|--------------------------------------------|
-| `IG.IG_CLIENT_ID`      | ig-client             | IG agent client                            |
-| `IG.IG_CLIENT_SECRET`  | add-here-the-password | IG agent password                          |
-| `IG.IG_RCS_SECRET`     | add-here-the-secret   | IG rcs secret for remote consent service   |
-| `IG.IG_SSA_SECRET`     | add-here-the-secret   | IG ssa secret for software publisher agent |
-| `IG.IG_IDM_USER`       | service_account.ig    | IG service user account                    |
-| `IG.IG_IDM_PASSWORD`   | add-here-the-password | IG service user account password           |
-| `IG.IG_AGENT_ID`       | ig-agent              | IG agent id for IG policy agent            |
-| `IG.IG_AGENT_PASSWORD` | add-here-the-password | Ig agent password for IG policy agent      |
-</details>
-
-**Identity variables**
-<details>
-<summary>Table</summary>
-<!-- always an empty line before table -->
-
-| Environment variable                          | default                 | description                                              |
-|-----------------------------------------------|-------------------------|----------------------------------------------------------|
-| `IDENTITY.AM_REALM`                           | alpha                   | The realm used for secure banking                        |
-| `IDENTITY.IDM_CLIENT_ID`                      | policy-client           | Placeholder to create Open Banking Dynamic Policy script |
-| `IDENTITY.IDM_CLIENT_SECRET`                  | password                | Placeholder to create Open Banking Dynamic Policy script |
-| `IDENTITY.SERVICE_ACCOUNT_POLICY`             | service_account.policy  | Service account for Open banking policy                  |
-| `IDENTITY.REMOTE_CONSENT_ID`                  | secure-open-banking-rcs | Identification of remote consent agent                   |
-| `IDENTITY.OBRI_SOFTWARE_PUBLISHER_AGENT_NAME` | OBRI                    | software publisher agent name                            |
-| `IDENTITY.TEST_SOFTWARE_PUBLISHER_AGENT_NAME` | test-publisher          | test software publisher agent                            |
-</details>
 
 **Users variables**
 <details>
@@ -140,22 +105,19 @@ There are a variables used before load the configuration file and these variable
 
 | Environment variable       | default                        | description                                                               |
 |----------------------------|--------------------------------|---------------------------------------------------------------------------|
-| `USERS.CDM_ADMIN_USERNAME` | amadmin                        | Identity platform Username with admin grants (must exist previously)      |
-| `USERS.CDM_ADMIN_PASSWORD` | add-here-the-user-password     | Identity platform User password with admin grants (must exist previously) |
+| `USERS.FR_PLATFORM_ADMIN_USERNAME` | amadmin                        | Identity platform Username with admin grants (must exist previously)      |
+| `USERS.FR_PLATFORM_ADMIN_PASSWORD` | add-here-the-user-password     | Identity platform User password with admin grants (must exist previously) |
 | `USERS.PSU_USERNAME`       | add-here-the-psu-user-name     | Psu Username to (It will be created)                                      |
 | `USERS.PSU_PASSWORD`       | add-here-the-psu-user-password | Psu user password (It will be created)                                    |
 </details>
 
-**Namespaces variables**
+
+**Namespace variables**
 
 | Environment variable | default                                              | description                                                     |
 |----------------------|------------------------------------------------------|-----------------------------------------------------------------|
-| `NAMESPACES`         | [ns-env-one, ns-env-two, github-developer-user-name] | Array of developer namespaces/environments to populate PSU data |
+| `NAMESPACE         | ns-env | Developer namespace to populate PSU data |
 
-## Json Identify platform configuration files
-Identity Platform JSON files configuration can be added to the config/defaults/${type} directory under either the [additional](./config/defaults/managed-objects/additional) or [openbanking](./config/defaults/managed-objects/openbanking) path. The files must be json and the filenames must match the name of the managed object.
-Eg: the managed object with name `apiClient` must be contained in a filename called `apiClient.json`
-The initializer will attempt to match the filename (minus suffix) to an IDM managed object of the same name. If none are found within IDM then the initializer will create a new idm managed object.
 
 ## Kubernetes ConfigMap
 You can override all identity platform configuration files with config predefined within a kubernetes config map.

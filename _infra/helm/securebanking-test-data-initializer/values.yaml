@@ -6,11 +6,12 @@ cron: "* * * * *"
 # FIDC value: FIDC (Forgerock Identity Cloud) identity cloud platform
 environment:
   type: FIDC
-  namespace: nightly
+  namespace: dev
   # RaiseForStatus will exit if go resty returns an error in STRICT mode,
   # be it client error, server error or other. Turning off (false)
   # STRICT mode will simply warn of client/server errors.
   strict: true
+  frPlatformAdminPassword: replace
 
 # The GCP project where the secret lives
 projectId: sbat-dev

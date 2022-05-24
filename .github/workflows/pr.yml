@@ -1,0 +1,36 @@
+name: pr
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths-ignore:
+      - README.md
+
+env:
+  SERVICE_NAME: securebanking-test-data-initializer
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run Tests
+        run: |
+          make test-ci
+
+      - uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCR_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+
+        # Configure docker to use the gcloud command-line tool as a credential helper
+      - run: |
+          gcloud auth configure-docker
+
+      - name: docker build
+        run: |
+          make docker

@@ -21,11 +21,10 @@ import (
 func init() {
 	fmt.Println("initializing the program.....")
 	viper.AutomaticEnv()
-	os.Setenv("USERS.CDM_ADMIN_PASSWORD", "qhTeyjHyScxAHHW9giHkUuWD")
 	viper.SetDefault("ENVIRONMENT.VERBOSE", false)
 	viper.SetDefault("ENVIRONMENT.STRICT", true)
 	viper.SetDefault("ENVIRONMENT.VIPER_CONFIG", "default")
-	os.Getenv("USERS.CDM_ADMIN_PASSWORD")
+	fmt.Println("USERS.FR_PLATFORM_ADMIN_PASSWORD", os.Getenv("USERS.FR_PLATFORM_ADMIN_PASSWORD"))
 	loadLogger()
 	loadConfiguration()
 	checks()

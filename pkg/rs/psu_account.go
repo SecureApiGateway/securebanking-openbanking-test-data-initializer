@@ -82,11 +82,11 @@ func PopulateRSData(userId string) {
 	}
 	namespace := getNamespace()
 	zap.S().Infow("*", "namespace", namespace)
-	path := "https://rs." + namespace + ".forgerock.financial/admin/data/user/has-data?userId=" + userId
+	path := common.Config.Hosts.Scheme + "://" + common.Config.Hosts.RsFQDN + "/admin/data/user/has-data?userId=" + userId
 	if mustPopulateUserData(path, namespace) {
 		zap.S().Infow("Populate with RS Data the Payment Services User with the userId: " + userId)
 		params := "userId=" + userId + "&username=" + userId + "&profile=random"
-		path := "https://rs." + namespace + ".forgerock.financial/admin/fake-data/generate?" + params
+		path := common.Config.Hosts.Scheme + "://" + common.Config.Hosts.RsFQDN + "/admin/fake-data/generate?" + params
 		s := httprest.Client.PostRS(path, map[string]string{
 			"Accept":     "*/*",
 			"Connection": "keep-alive",
@@ -97,9 +97,7 @@ func PopulateRSData(userId string) {
 }
 
 func getNamespace() string {
-	// need to be the same namespaces set in https://raw.githubusercontent.com/ForgeCloud/sbat-infra/master/NAMESPACES.md
-	//namespaces := []string{"dev", "nightly", "jorgesanchezperez", "bohocode", "mariantiris", "andra-racovita", "christian-brindley"}
-	ns := common.Config.Namespaces
+	ns := common.Config.Namespace
 	if strings.HasSuffix(ns, "-cdk") {
 		ns = strings.TrimSuffix(ns, "-cdk")
 	}
