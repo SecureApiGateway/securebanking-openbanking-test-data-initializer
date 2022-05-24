@@ -1,0 +1,12 @@
+{
+    "extensionClassName": "",
+    "source": "FIXED_VALUE",
+    "fixedValue": "https://iam.dev.forgerock.financial",
+    "contextPath": "/am",
+    "_id": "",
+    "_type": {
+        "_id": "baseurl",
+        "name": "Base URL Source",
+        "collection": false
+    }
+}

@@ -1,0 +1,243 @@
+[
+  {
+      "operation": "add",
+      "field": "objects/-",
+      "value": {
+        "name": "apiClient",
+        "schema": {
+          "$schema": "http://forgerock.org/json-schema#",
+          "type": "object",
+          "title": "apiClient",
+          "description": "Secure Banking apiClient",
+          "icon": "fa-cogs",
+          "properties": {
+            "_id": {
+              "title": "IDM Internal ID",
+              "type": "string",
+              "viewable": true,
+              "searchable": true,
+              "userEditable": true,
+              "description": null,
+              "isVirtual": false,
+              "deleteQueryConfig": false
+            },
+            "id": {
+              "title": "API Client ID",
+              "type": "string",
+              "viewable": true,
+              "searchable": true,
+              "userEditable": true,
+              "description": null,
+              "isVirtual": false,
+              "deleteQueryConfig": false
+            },
+            "name": {
+              "title": "API Client Name",
+              "type": "string",
+              "viewable": true,
+              "searchable": true,
+              "userEditable": true
+            },
+            "description": {
+              "title": "Description",
+              "type": "string",
+              "viewable": true,
+              "searchable": true,
+              "userEditable": true
+            },
+            "logoUri": {
+              "title": "Logo URI",
+              "type": "string",
+              "viewable": true,
+              "searchable": true,
+              "userEditable": true
+            },
+            "jwksUri": {
+              "title": "JWKS URI",
+              "type": "string",
+              "viewable": true,
+              "searchable": true,
+              "userEditable": true
+            },
+            "ssa": {
+              "title": "Software Statement Assertion",
+              "type": "string",
+              "viewable": true,
+              "searchable": true,
+              "userEditable": true,
+              "description": null,
+              "minLength": null,
+              "isVirtual": false,
+              "policies": [
+                {
+                  "policyId": "unique",
+                  "params": {}
+                }
+              ]
+            },
+            "apiClientOrg": {
+              "title": "API Client Organisation",
+              "type": "relationship",
+              "viewable": true,
+              "searchable": false,
+              "userEditable": false,
+              "returnByDefault": false,
+              "reverseRelationship": true,
+              "reversePropertyName": "apiClients",
+              "validate": false,
+              "properties": {
+                "_ref": {
+                  "type": "string"
+                },
+                "_refProperties": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "required": false,
+                      "propName": "_id"
+                    }
+                  }
+                }
+              },
+              "resourceCollection": [
+                {
+                  "path": "managed/apiClientOrg",
+                  "label": "apiClientorg",
+                  "query": {
+                    "queryFilter": "true",
+                    "fields": [
+                      "id",
+                      "name"
+                    ],
+                    "sortKeys": []
+                  },
+                  "notify": false
+                }
+              ],
+              "description": null,
+              "requiredByParent": false,
+              "isVirtual": false,
+              "notifySelf": false,
+              "referencedRelationshipFields": null,
+              "referencedObjectFields": null,
+              "deleteQueryConfig": false
+            },
+            "oauth2ClientId": {
+              "title": "OAuth2 Client ID",
+              "type": "string",
+              "viewable": true,
+              "searchable": true,
+              "userEditable": true,
+              "description": "OAuth2 Client ID",
+              "isVirtual": false,
+              "deleteQueryConfig": false
+            },
+            "domesticPaymentIntents": {
+              "description": "",
+              "title": "Domesticpaymentintents",
+              "viewable": true,
+              "searchable": false,
+              "userEditable": false,
+              "returnByDefault": false,
+              "notifySelf": false,
+              "type": "array",
+              "items": {
+                "type": "relationship",
+                "reverseRelationship": true,
+                "reversePropertyName": "apiClient",
+                "validate": false,
+                "properties": {
+                  "_ref": {
+                    "type": "string"
+                  },
+                  "_refProperties": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "required": false,
+                        "propName": "_id"
+                      }
+                    }
+                  }
+                },
+                "resourceCollection": [
+                  {
+                    "path": "managed/domesticPaymentIntent",
+                    "label": "Domesticpaymentintent",
+                    "query": {
+                      "queryFilter": "true",
+                      "fields": [],
+                      "sortKeys": []
+                    },
+                    "notify": false
+                  }
+                ]
+              }
+            },
+            "accountAccessIntents": {
+              "description": "",
+              "title": "Accountaccessintents",
+              "viewable": true,
+              "searchable": false,
+              "userEditable": false,
+              "returnByDefault": false,
+              "notifySelf": false,
+              "type": "array",
+              "items": {
+                "type": "relationship",
+                "reverseRelationship": true,
+                "reversePropertyName": "apiClient",
+                "validate": false,
+                "properties": {
+                  "_ref": {
+                    "type": "string"
+                  },
+                  "_refProperties": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "required": false,
+                        "propName": "_id"
+                      }
+                    }
+                  }
+                },
+                "resourceCollection": [
+                  {
+                    "path": "managed/accountAccessIntent",
+                    "label": "Accountaccessintent",
+                    "query": {
+                      "queryFilter": "true",
+                      "fields": [],
+                      "sortKeys": []
+                    },
+                    "notify": false
+                  }
+                ]
+              }
+            }
+          },
+          "order": [
+            "_id",
+            "id",
+            "name",
+            "description",
+            "logoUri",
+            "jwksUri",
+            "ssa",
+            "apiClientOrg",
+            "oauth2ClientId",
+            "domesticPaymentIntents",
+            "accountAccessIntents"
+          ],
+          "required": [],
+          "mat-icon": null
+        },
+        "iconClass": "fa fa-database",
+        "type": "Managed Object"
+      }
+    }
+]

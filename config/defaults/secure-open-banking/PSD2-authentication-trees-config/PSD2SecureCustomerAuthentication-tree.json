@@ -1,0 +1,57 @@
+{
+  "entryNodeId": "ee0efdc1-9fba-4323-95ef-ec468f6ad30c",
+  "_id": "PSD2SecureCustomerAuthentication",
+  "nodes": {
+    "ee0efdc1-9fba-4323-95ef-ec468f6ad30c": {
+      "x": 200,
+      "y": 218.015625,
+      "connections": {
+        "outcome": "4785b3c1-5dc9-4883-b01e-2f1b6bfda50e"
+      },
+      "nodeType": "UsernameCollectorNode",
+      "displayName": "Username Collector",
+      "config": {
+        "_id": "ee0efdc1-9fba-4323-95ef-ec468f6ad30c"
+      }
+    },
+    "4785b3c1-5dc9-4883-b01e-2f1b6bfda50e": {
+      "x": 266,
+      "y": 295.015625,
+      "connections": {
+        "outcome": "e1a7cb7b-4dae-4573-84f1-d19f4b4dcb03"
+      },
+      "nodeType": "PasswordCollectorNode",
+      "displayName": "Password Collector",
+      "config": {
+        "_id": "4785b3c1-5dc9-4883-b01e-2f1b6bfda50e"
+      }
+    },
+    "e1a7cb7b-4dae-4573-84f1-d19f4b4dcb03": {
+      "x": 510,
+      "y": 186.015625,
+      "connections": {
+        "true": "70e691a5-1e33-4ac3-a356-e7b6d60d92e0",
+        "false": "e301438c-0bd0-429c-ab0c-66126501069a"
+      },
+      "nodeType": "DataStoreDecisionNode",
+      "displayName": "Data Store Decision",
+      "config": {
+        "_id": "e1a7cb7b-4dae-4573-84f1-d19f4b4dcb03"
+      }
+    }
+  },
+  "staticNodes": {
+    "startNode": {
+      "x": 50,
+      "y": 250
+    },
+    "70e691a5-1e33-4ac3-a356-e7b6d60d92e0": {
+      "x": 809,
+      "y": 37
+    },
+    "e301438c-0bd0-429c-ab0c-66126501069a": {
+      "x": 823,
+      "y": 242
+    }
+  }
+}

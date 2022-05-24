@@ -1,0 +1,47 @@
+---
+ENVIRONMENT: # Root key to define the environment program properties
+  VIPER_CONFIG: default # The profile that contains the configuration to be overwritten from system env
+  VERBOSE: false # Log level (verbose=true means debug mode)
+  # STRICT: true = strict mode on, otherwise off, will exit the program if the go resty returns an error in STRICT mode enabled,
+  # be it client error, server error or other. Turning off STRICT mode will simply warn of client/server errors with no exit program.
+  STRICT: true
+  ONLY_CONFIG: false # this property is to have control on the program to print the configuration only without run the main program
+  # TYPE: It can be the values set on platform constants (@See constants.go), currently CDK or CDM
+  # CDK value: (Cloud Developer's Kit) development identity platform
+  # CDM value: CDM (Cloud Deployment Model) identity cloud platform
+  # FIDC (Forgerock Identity Cloud) identity cloud platform
+  TYPE: CDK
+  PATHS: # Key to define the paths for files to populate configuration data to the platform
+    CONFIG_BASE_DIRECTORY: config/defaults/ # Base configuration path folder
+    CONFIG_SECURE_BANKING: config/defaults/secure-open-banking/ # Path folder for secure banking
+    CONFIG_IDENTITY_PLATFORM: config/defaults/identity-platform/ # Path folder for generic platform configuration
+HOSTS:
+  IDENTITY_PLATFORM_FQDN: iam.dev.forgerock.financial # Identity platform Host name
+  IG_FQDN: ig.dev.forgerock.financial # IG host name
+  RS_FQDN: rs.dev.forgerock.financial # RS host name
+  RCS_FQDN: rcs.dev.forgerock.financial # RCS host name
+  RCS_UI_FQDN: rcs-ui.dev.forgerock.financial # RCS user interface app host name (Consent user app)
+  SCHEME: https # URI scheme, Syntax part of a generic URI
+# IG: # Root key for parameter values related with IG platform component service configuration
+#   IG_CLIENT_ID: ig-client # IG agent client
+#   IG_CLIENT_SECRET: password # IG agent password
+#   IG_RCS_SECRET: password # IG rcs secret for remote consent service
+#   IG_SSA_SECRET: password # IG ssa secret for software publisher agent
+#   IG_IDM_USER: service_account.ig # IG service user account
+#   IG_IDM_PASSWORD: 0penBanking! # IG service user account password
+#   IG_AGENT_ID: ig-agent # IG agent id for IG policy agent
+#   IG_AGENT_PASSWORD: password # Ig agent password for IG policy agent
+# IDENTITY: # Root key for parameter values related with identity platform configuration
+#   AM_REALM: alpha # The realm used for secure banking
+#   IDM_CLIENT_ID: policy-client # Placeholder to create Open Banking Dynamic Policy script
+#   IDM_CLIENT_SECRET: password # Placeholder to create Open Banking Dynamic Policy script
+#   SERVICE_ACCOUNT_POLICY: service_account.policy # Service account for Open banking policy
+#   REMOTE_CONSENT_ID: secure-open-banking-rcs # Identification of remote consent agent
+#   OBRI_SOFTWARE_PUBLISHER_AGENT_NAME: OBRI # software publisher agent name
+#   TEST_SOFTWARE_PUBLISHER_AGENT_NAME: test-publisher # test software publisher agent
+USERS: # Root key users to be created or to authenticate and authorize flows
+  CDM_ADMIN_USERNAME: amadmin # Identity platform Username with admin grants (must exist previously)
+  CDM_ADMIN_PASSWORD: 9xVUgOpOxGNQxMF2j96YsJ8W # Identity platform User password with admin grants (must exist previously)
+  PSU_USERNAME: psu4test # Psu Username to (It will be created)
+  PSU_PASSWORD: 0penBanking! # Psu user password (It will be created)
+NAMESPACES: christian-brindley # Root key to get the namespaces/environments to populate the user data

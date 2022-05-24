@@ -1,0 +1,77 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: test-init
+spec:
+  schedule: "{{ .Values.cron }}"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: test-init
+              image: eu.gcr.io/sbat-gcr-develop/securebanking/securebanking-test-data-initializer:joyce
+              imagePullPolicy: Always
+              env:
+                - name: ENVIRONMENT.STRICT
+                  value: {{ .Values.environment.strict | quote }}
+                - name: ENVIRONMENT.TYPE
+                  valueFrom:
+                    configMapKeyRef:
+                      name: securebanking-platform-config
+                      key: ENVIRONMENT_TYPE
+                - name: IDENTITY_PLATFORM_FQDN # variable to run the command shell, the shell doesn't support variables with dot.
+                  valueFrom:
+                    configMapKeyRef:
+                      name: securebanking-platform-config
+                      key: IDENTITY_PLATFORM_FQDN
+                - name: HOSTS.IDENTITY_PLATFORM_FQDN
+                  valueFrom:
+                    configMapKeyRef:
+                      name: securebanking-platform-config
+                      key: IDENTITY_PLATFORM_FQDN
+                - name: HOSTS.RS_FQDN
+                  valueFrom:
+                    configMapKeyRef:
+                      name: securebanking-platform-config
+                      key: RS_FQDN
+                - name: HOSTS.RCS_UI_FQDN
+                  valueFrom:
+                    configMapKeyRef:
+                      name: securebanking-platform-config
+                      key: RCS_UI_FQDN
+                - name: HOSTS.IG_FQDN
+                  valueFrom:
+                    configMapKeyRef:
+                      name: securebanking-platform-config
+                      key: IG_FQDN
+                {{- if eq .Values.environment.type "FIDC" }}
+                - name: USERS.CDM_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: initializer-secret
+                      key: cdm-admin-password                 
+                - name: USERS.CDM_ADMIN_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: initializer-secret
+                      key: cdm-admin-user
+                 {{ end }}              
+                - name: NAMESPACES
+                  value: {{ .Values.environment.namespace }}
+              command: [ "/bin/sh", "-c" ]
+              args:
+                - |
+                  echo "IDENTITY_PLATFORM_FQDN $IDENTITY_PLATFORM_FQDN"
+                  until $(curl -X GET --output /dev/null --silent --head --fail -H "X-OpenIDM-Username: anonymous" \
+                  -H "X-OpenIDM-Password: anonymous" -H "X-OpenIDM-NoSession: true" \
+                  https://$IDENTITY_PLATFORM_FQDN/openidm/info/ping)
+                  do
+                  echo "IDM not ready"
+                  sleep 10
+                  done
+                  ./setup
+          restartPolicy: OnFailure

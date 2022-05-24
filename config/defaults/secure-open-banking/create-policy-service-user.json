@@ -1,0 +1,11 @@
+{
+  "userName": "service_account.policy",
+  "sn": "Service Account",
+  "givenName": "Policy Engine",
+  "mail": "obst@forgerock.com",
+  "password": "0penBanking!",
+  "authzRoles": [{
+    "_ref": "internal/role/openidm-admin",
+    "_refProperties": {}
+  }]
+}

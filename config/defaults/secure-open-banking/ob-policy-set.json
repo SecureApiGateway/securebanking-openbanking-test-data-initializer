@@ -1,0 +1,42 @@
+{
+  "name": "Open Banking",
+  "displayName": "Open Banking",
+  "description": "",
+  "resourceTypeUuids": [
+    "76656a38-5f8e-401b-83aa-4ccb74ce88d2"
+  ],
+  "realm": "/{{realm}}",
+  "applicationType": "iPlanetAMWebAgentService",
+  "conditions": [
+    "AMIdentityMembership",
+    "AND",
+    "AuthLevel",
+    "AuthScheme",
+    "AuthenticateToRealm",
+    "AuthenticateToService",
+    "IPv4",
+    "IPv6",
+    "LDAPFilter",
+    "LEAuthLevel",
+    "NOT",
+    "OAuth2Scope",
+    "OR",
+    "Policy",
+    "ResourceEnvIP",
+    "Script",
+    "Session",
+    "SessionProperty",
+    "SimpleTime",
+    "Transaction"
+  ],
+  "subjects": [
+    "AND",
+    "AuthenticatedUsers",
+    "Identity",
+    "JwtClaim",
+    "NONE",
+    "NOT",
+    "OR",
+    "Policy"
+  ]
+}

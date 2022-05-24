@@ -1,0 +1,60 @@
+{
+  "name": "AISP Policy",
+  "active": true,
+  "description": "",
+  "resources": [
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/balances",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/balances?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/balances",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/transactions",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/transactions?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/transactions",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/transactions?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/beneficiaries",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/beneficiaries?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/beneficiaries",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/direct-debits",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/direct-debits?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/direct-debits",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/standing-orders",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/standing-orders?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/standing-orders",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/products",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/products?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/product",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/offers",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/offers?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/offers",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/party",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/parties",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/party",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/scheduled-payments",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/scheduled-payments?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/scheduled-payments",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/statements",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/statements?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/statements",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/statements?page=*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/statements/*",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/statements/*/file",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/statements/*/transactions",
+    "https://rs.*.forgerock.financial:443/open-banking/*/aisp/accounts/*/statements/*/transactions?page=*"
+  ],
+  "applicationName": "Open Banking",
+  "actionValues": {
+    "GET": true
+  },
+  "subject": {
+    "type": "JwtClaim",
+    "claimName": "intent_type",
+    "claimValue": "aisp"
+  },
+  "condition": {
+    "type": "Script",
+    "scriptId": "2f1cdd1a-4a4e-4d3d-b570-90be003545b3"
+  },
+  "resourceTypeUuid": "76656a38-5f8e-401b-83aa-4ccb74ce88d2"
+}
