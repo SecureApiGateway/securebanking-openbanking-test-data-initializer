@@ -23,8 +23,8 @@ the initializer application supports a personalized configuration file (as a pro
 
 > :memo: All the variables/properties values provides by the configuration file can be overwritten using environment variables or a kubernetes config map.
 > ```shell
-> go build -o setup \
-> env ENVIRONMENT.VERBOSE=true ./setup
+> go build -o initialize \
+> env ENVIRONMENT.VERBOSE=true ./initialize
 > ```
 
 #### ConfigMap for variables mount example
@@ -48,16 +48,16 @@ The configuration file is loaded from the path `config/viper` following the patt
 where the environment/profile can be specified by environment variable, passing that environment variable to the program.
 **Examples**
 ```shell
-go build -o setup
+go build -o initialize
 ```
 ```shell
-env ENVIRONMENT.VIPER_CONFIG=MY-ENVIRONMENT-PROFILE-VIPER_CONFIG ./setup
+env ENVIRONMENT.VIPER_CONFIG=MY-ENVIRONMENT-PROFILE-VIPER_CONFIG ./initialize
 ```
 > The application will attempt to load the configuration file `viper-MY-ENVIRONMENT-PROFILE-VIPER_CONFIG-configuration.yaml`
 
 **Other example**
 ```shell
-env ENVIRONMENT.VIPER_CONFIG=MY-ENVIRONMENT-PROFILE-VIPER_CONFIG ENVIRONMENT.VERBOSE=true ... ./setup
+env ENVIRONMENT.VIPER_CONFIG=MY-ENVIRONMENT-PROFILE-VIPER_CONFIG ENVIRONMENT.VERBOSE=true ... ./initialize
 ```
 
 #### Configuration variables
@@ -103,20 +103,20 @@ There are a variables used before load the configuration file and these variable
 <summary>Table</summary>
 <!-- always an empty line before table -->
 
-| Environment variable       | default                        | description                                                               |
-|----------------------------|--------------------------------|---------------------------------------------------------------------------|
+| Environment variable               | default                        | description                                                               |
+|------------------------------------|--------------------------------|---------------------------------------------------------------------------|
 | `USERS.FR_PLATFORM_ADMIN_USERNAME` | amadmin                        | Identity platform Username with admin grants (must exist previously)      |
 | `USERS.FR_PLATFORM_ADMIN_PASSWORD` | add-here-the-user-password     | Identity platform User password with admin grants (must exist previously) |
-| `USERS.PSU_USERNAME`       | add-here-the-psu-user-name     | Psu Username to (It will be created)                                      |
-| `USERS.PSU_PASSWORD`       | add-here-the-psu-user-password | Psu user password (It will be created)                                    |
+| `USERS.PSU_USERNAME`               | add-here-the-psu-user-name     | Psu Username to (It will be created)                                      |
+| `USERS.PSU_PASSWORD`               | add-here-the-psu-user-password | Psu user password (It will be created)                                    |
 </details>
 
 
 **Namespace variables**
 
-| Environment variable | default                                              | description                                                     |
-|----------------------|------------------------------------------------------|-----------------------------------------------------------------|
-| `NAMESPACE         | ns-env | Developer namespace to populate PSU data |
+| Environment variable | default | description                              |
+|----------------------|---------|------------------------------------------|
+| `NAMESPACE`          | ns-env  | Developer namespace to populate PSU data |
 
 
 ## Kubernetes ConfigMap
@@ -163,12 +163,22 @@ running the `make test-ci` target will download the required binaries to be able
 Creation of PSU user on AM and populate the user data to RS service for each environment.
 - For functional test purposes @See /rs folder.
 
+## Test locally the program against an environment
+For default the deployment will pull the latest initializer image, the latest image is generated when a PR is merged into master.
+When a PR is created a github action is triggered to build and push the initializer image tagged with the PR-NUMBER.
+To test the initializer against an environment follow the below steps:
+- Build the program `go mod tidy` and `go build -o initialize`
+- Set your configuration, follow the section [initialize configuration](#program-configuration-variables-environment-program)
+- Run the program:
+  - `./initialize` with the default configuration
+  - `env ENVIRONMENT.VIPER_CONFIG=${MY-PROFILE} ./initialize` to set your configuration profile
+  - 
 ### Commands
-| Command             | description                                                                                                          |
-|---------------------|----------------------------------------------------------------------------------------------------------------------|
-| `go mod tidy`       | add missing and remove unused modules                                                                                |
-| `go build -o setup` | compiles the packages named by the import paths, along with their dependencies, but it does not install the results. |
-| `go run`            | compiles and runs the named main Go package                                                                          |
-| `./setup`           | run the compiled program                                                                                             |
+| Command                  | description                                                                                                          |
+|--------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `go mod tidy`            | add missing and remove unused modules                                                                                |
+| `go build -o initialize` | compiles the packages named by the import paths, along with their dependencies, but it does not install the results. |
+| `go run`                 | compiles and runs the named main Go package                                                                          |
+| `./setup`                | run the compiled program                                                                                             |
 
 > For more information about go command `go help`
