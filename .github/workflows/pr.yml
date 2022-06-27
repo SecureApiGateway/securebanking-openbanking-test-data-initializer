@@ -8,6 +8,7 @@ on:
 
 env:
   SERVICE_NAME: securebanking-test-data-initializer
+  PR_NUMBER: pr-${{ github.event.number }}
 
 jobs:
   build:
@@ -33,4 +34,4 @@ jobs:
 
       - name: docker build
         run: |
-          make docker
+          make docker tag=${{ env.PR_NUMBER }}

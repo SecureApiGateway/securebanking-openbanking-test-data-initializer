@@ -1,14 +1,11 @@
 name: merge
 
 on:
-  push:
-    branches: [ master ]
-    paths-ignore:
-      - README.md
+  release:
+    types: [ published ]
 
 env:
   SERVICE_NAME: securebanking-test-data-initializer
-  GIT_SHA_SHORT: $(echo ${{ github.sha }} | cut -c1-7)
 
 jobs:
   build:
@@ -34,6 +31,4 @@ jobs:
       
       - name: docker build
         run: |
-          make docker tag=${{ env.GIT_SHA_SHORT }}
-          docker tag eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/${{ env.SERVICE_NAME }}:${{ env.GIT_SHA_SHORT }} eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/${{ env.SERVICE_NAME }}:latest
-          docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/${{ env.SERVICE_NAME }}:latest
+          make docker release-repo=${{ secrets.RELEASE_REPO }}
