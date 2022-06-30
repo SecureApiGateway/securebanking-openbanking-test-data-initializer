@@ -17,11 +17,11 @@ ENVIRONMENT: # Root key to define the environment program properties
     CONFIG_IDENTITY_PLATFORM: config/defaults/identity-platform/ # Path folder for generic platform configuration
 HOSTS:
   RS_FQDN: rs.dev.forgerock.financial # RS host name
-  IDENTITY_PLATFORM_FQDN: iam.joycegilding-forgerock.forgerock.financial # Identity platform Host name
+  IDENTITY_PLATFORM_FQDN: iam.jorgesanchezperez.forgerock.financial # Identity platform Host name
   SCHEME: https # URI scheme, Syntax part of a generic URI
 USERS: # Root key users to be created or to authenticate and authorize flows
   FR_PLATFORM_ADMIN_USERNAME: amadmin # Identity platform Username with admin grants (must exist previously)
   FR_PLATFORM_ADMIN_PASSWORD: Ny1gtep8shAjsbBIMGEuDpeH # Identity platform User password with admin grants (must exist previously)
   PSU_USERNAME: psu4test # Psu Username to (It will be created)
   PSU_PASSWORD: 0penBanking! # Psu user password (It will be created)
-NAMESPACE: joycegilding-forgerock # Root key to get the namespace/environment to populate the user data
+NAMESPACE: jorgesanchezperez # Root key to get the namespace/environment to populate the user data
