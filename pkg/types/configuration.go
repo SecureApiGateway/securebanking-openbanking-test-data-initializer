@@ -2,6 +2,7 @@ package types
 
 type Configuration struct {
 	Environment environment `mapstructure:"ENVIRONMENT"`
+	Identity    identity    `mapstructure:"IDENTITY"`
 	Hosts       hosts       `mapstructure:"HOSTS"`
 	Users       users       `mapstructure:"USERS"`
 	Namespace   string      `mapstructure:"NAMESPACE"`
@@ -12,17 +13,15 @@ type hosts struct {
 	IdentityPlatformFQDN string `mapstructure:"IDENTITY_PLATFORM_FQDN"`
 	Scheme               string `mapstructure:"SCHEME"`
 }
+
+type identity struct {
+	AmRealm string `mapstructure:"AM_REALM"`
+}
+
 type environment struct {
 	Verbose bool   `mapstructure:"VERBOSE"`
 	Strict  bool   `mapstructure:"STRICT"`
 	Type    string `mapstructure:"TYPE"`
-	Paths   paths  `mapstructure:"PATHS"`
-}
-
-type paths struct {
-	ConfigBaseDirectory    string `mapstructure:"CONFIG_BASE_DIRECTORY"`
-	ConfigSecureBanking    string `mapstructure:"CONFIG_SECURE_BANKING"`
-	ConfigIdentityPlatform string `mapstructure:"CONFIG_IDENTITY_PLATFORM"`
 }
 
 type users struct {

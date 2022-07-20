@@ -2,18 +2,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/spf13/viper"
+	"go.uber.org/zap"
 	"os"
-	"reflect"
 	"securebanking-test-data-initializer/pkg/common"
 	"securebanking-test-data-initializer/pkg/httprest"
 	platform "securebanking-test-data-initializer/pkg/identity-platform"
 	"securebanking-test-data-initializer/pkg/rs"
 	"securebanking-test-data-initializer/pkg/types"
-	"strconv"
-	"strings"
-
-	"github.com/spf13/viper"
-	"go.uber.org/zap"
 )
 
 // init function is execute before main to initialize the program,
@@ -24,9 +20,13 @@ func init() {
 	viper.SetDefault("ENVIRONMENT.VERBOSE", false)
 	viper.SetDefault("ENVIRONMENT.STRICT", true)
 	viper.SetDefault("ENVIRONMENT.VIPER_CONFIG", "default")
-	fmt.Println("USERS.FR_PLATFORM_ADMIN_PASSWORD", os.Getenv("USERS.FR_PLATFORM_ADMIN_PASSWORD"))
+	viper.SetDefault("IDENTITY.AM_REALM", "alpha")
+	// load default logger
+	fmt.Println("initializing the default logger.....")
 	loadLogger()
 	loadConfiguration()
+	// load logger again to update the level set in the configuration file
+	loadLogger()
 	checks()
 	// after call 'loadConfiguration' we have an object with all configuration mapped
 	if common.Config.Environment.Verbose {
@@ -89,18 +89,6 @@ func loadConfiguration() {
 
 func checks() {
 	fmt.Println("Making some checks.....")
-	checkPaths()
-}
-func checkPaths() {
-	zap.L().Debug("Checking trailing slash in paths")
-	suffix := "/"
-	value := reflect.ValueOf(config.Environment.Paths)
-	for i := 0; i < value.NumField(); i++ {
-		if !strings.HasSuffix(value.Field(i).String(), suffix) {
-			zap.S().Fatalw(value.Type().Field(i).Name + " must have a trailing slash /")
-		}
-		zap.S().Debugw("index["+strconv.Itoa(i)+"]", "Field", value.Type().Field(i).Name, "value", value.Field(i).String())
-	}
 }
 
 func getIdentityPlatformSession() *common.Session {
