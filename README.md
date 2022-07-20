@@ -80,9 +80,6 @@ There are a variables used before load the configuration file and these variable
 | `ENVIRONMENT.ONLY_CONFIG`                    | false                                | Prints the configuration and exiting the program, to review the properties                                                                                                                                        |
 | `ENVIRONMENT.STRICT`                         | false                                | true = strict mode on, otherwise off, will exit if go resty returns an error in STRICT mode enabled, be it client error, server error or other. Turning off STRICT mode will simply warn of client/server errors. |
 | `ENVIRONMENT.TYPE`                           | CDK                                  | values: CDK, CDM or FIDC,  to identify the kind of identity platform                                                                                                                                              |
-| `ENVIRONMENT.PATHS.CONFIG_BASE_DIRECTORY`    | config/defaults/                     | Base configuration root path folder for data files and templates to populate them into identity platform                                                                                                          |
-| `ENVIRONMENT.PATHS.CONFIG_SECURE_BANKING`    | config/defaults/secure-open-banking/ | Base configuration path folder for specific secure open banking data files and templates to populate them into identity platform                                                                                  |
-| `ENVIRONMENT.PATHS.CONFIG_IDENTITY_PLATFORM` | config/defaults/identity-platform/   | Base configuration path folder for generic data files and templates to populate them into identity platform                                                                                                       |
 </details>
 
 **Host variables**
@@ -103,12 +100,12 @@ There are a variables used before load the configuration file and these variable
 <summary>Table</summary>
 <!-- always an empty line before table -->
 
-| Environment variable               | default                        | description                                                               |
-|------------------------------------|--------------------------------|---------------------------------------------------------------------------|
-| `USERS.FR_PLATFORM_ADMIN_USERNAME` | amadmin                        | Identity platform Username with admin grants (must exist previously)      |
-| `USERS.FR_PLATFORM_ADMIN_PASSWORD` | add-here-the-user-password     | Identity platform User password with admin grants (must exist previously) |
-| `USERS.PSU_USERNAME`               | add-here-the-psu-user-name     | Psu Username to (It will be created)                                      |
-| `USERS.PSU_PASSWORD`               | add-here-the-psu-user-password | Psu user password (It will be created)                                    |
+| Environment variable               | default    | description                                                               |
+|------------------------------------|------------|---------------------------------------------------------------------------|
+| `USERS.FR_PLATFORM_ADMIN_USERNAME` | amadmin    | Identity platform Username with admin grants (must exist previously)      |
+| `USERS.FR_PLATFORM_ADMIN_PASSWORD` | replace-me | Identity platform User password with admin grants (must exist previously) |
+| `USERS.PSU_USERNAME`               | replace-me | Psu Username to (It will be created)                                      |
+| `USERS.PSU_PASSWORD`               | replace-me | Psu user password (It will be created)                                    |
 </details>
 
 
@@ -123,37 +120,6 @@ There are a variables used before load the configuration file and these variable
 You can override all identity platform configuration files with config predefined within a kubernetes config map.
 
 > :warning: If a path variable as is set to the default relative path of `config/defaults/` then default pre-baked configuration json objects will be used and not your mounted ConfigMap
-
-### ConfigMap for identity platform files mount example
-
-```
-spec:
-  volumes:
-  - name: ob-defaults-objects
-    configMap:
-      name: openbanking-objects
-  containers:
-  - name: init-container
-    env:
-    - name: ENVIRONMENT.PATHS.CONFIG_BASE_DIRECTORY
-      value: /opt/config/
-    volumeMounts:
-    - mountPath: /opt/config/
-      name: ob-managed-objects
-      readOnly: true
-    - name: ENVIRONMENT.PATHS.CONFIG_SECURE_BANKING
-      value: /opt/config/secure-open-banking/
-    volumeMounts:
-    - mountPath: /opt/config/secure-open-banking/
-      name: ob-managed-objects
-      readOnly: true
-    - name: ENVIRONMENT.PATHS.CONFIG_IDENTITY_PLATFORM
-      value: /opt/config/identity-platform/
-    volumeMounts:
-    - mountPath: /opt/config/identity-platform/
-      name: ob-managed-objects
-      readOnly: true      
-```
 
 ## Running tests
 The tests run against a mockserver which is supplied by [Pact](https://docs.pact.io/). It is used specifically to test internal logic rather than to verify the provider contract.
@@ -178,7 +144,7 @@ To test the initializer against an environment follow the below steps:
 |--------------------------|----------------------------------------------------------------------------------------------------------------------|
 | `go mod tidy`            | add missing and remove unused modules                                                                                |
 | `go build -o initialize` | compiles the packages named by the import paths, along with their dependencies, but it does not install the results. |
+| `./initialize`           | run the compiled program                                                                                             |
 | `go run`                 | compiles and runs the named main Go package                                                                          |
-| `./setup`                | run the compiled program                                                                                             |
 
 > For more information about go command `go help`

@@ -33,7 +33,7 @@ func CreatePSU() string {
 	// TODO: check the managed user object, it's different for cloud
 	var managedUserObject = "user"
 	if common.Config.Environment.Type == types.Platform.Instance().FIDC {
-		managedUserObject = "alpha_user"
+		managedUserObject = common.Config.Identity.AmRealm + "_user"
 	}
 	path := "/openidm/managed/" + managedUserObject + "/?_action=create"
 	body, s := httprest.Client.Post(path, user, map[string]string{
@@ -55,7 +55,7 @@ func CreatePSU() string {
 // PSUIdentityExists will check for psu identities in the alpha realm
 func identityExists(identity string) (bool, string) {
 	filter := "?_queryFilter=uid+eq+%22" + url.QueryEscape(identity) + "%22&_fields=username"
-	path := "/am/json/realms/root/realms/alpha/users" + filter
+	path := "/am/json/realms/root/realms/" + common.Config.Identity.AmRealm + "/users" + filter
 	serviceIdentityFilter := &types.ResultFilter{}
 	b, _ := httprest.Client.Get(path, map[string]string{
 		"Accept":             "application/json",
