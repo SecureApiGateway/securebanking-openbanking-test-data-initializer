@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
-	"go.uber.org/zap"
 	"os"
 	"securebanking-test-data-initializer/pkg/common"
 	"securebanking-test-data-initializer/pkg/httprest"
 	platform "securebanking-test-data-initializer/pkg/identity-platform"
 	"securebanking-test-data-initializer/pkg/rs"
 	"securebanking-test-data-initializer/pkg/types"
+
+	"github.com/spf13/viper"
+	"go.uber.org/zap"
 )
 
 // init function is execute before main to initialize the program,
@@ -85,6 +86,7 @@ func loadConfiguration() {
 		zap.S().Fatalw("Cannot load config:", "error", err)
 	}
 	config = common.Config
+	zap.S().Info("Config is: %s", types.ToStr(config))
 }
 
 func checks() {
@@ -92,9 +94,9 @@ func checks() {
 }
 
 func getIdentityPlatformSession() *common.Session {
-	zap.L().Info("Get CookieName")
+	zap.L().Info("getIdentityPlatformSession() Get CookieName")
 	c := platform.GetCookieNameFromAm()
-	zap.L().Info("Get user session")
+	zap.L().Info("getIdentityPlatformSession() Get user session")
 	return platform.FromUserSession(c)
 }
 

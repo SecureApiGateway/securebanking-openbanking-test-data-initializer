@@ -1,17 +1,37 @@
 cron: "* * * * *"
 
+# ** Value Name:** iam_initializer_image_location
+#
+# ** Value Description** 
+# Location of the image in your docker repository. Override this in your own values file.
+# The template expects a tpl value, which enables the image location to be built up from
+# values containing repo location, image name etc. e.g.
+# 
+#  # Values from file
+#  helm_repository: eu.gcr.io/sbat-gcr-develop/securebanking
+#  test_data_initializer_image_name: secureopenbanking-uk-test-initializer
+#  test_data_initializer_image_tag: latest
+#  test_data_initializer_image_location: "{{ .Values.helm_repository }}/{{ .Values.test_data_initializer_image_name }}:{{ .Values.test_data_initializer_image_tag}}"
+
 # environment.type: It can be:
 # CDK value: (Cloud Developer's Kit) development identity platform
 # CDM value: CDM (Cloud Deployment Model) identity cloud platform
 # FIDC value: FIDC (Forgerock Identity Cloud) identity cloud platform
 environment:
-  type: FIDC
-  namespace: dev
+  # Configuration relating to the FR Platform
+  fr_platform:
+    type: FIDC
+    fqdn: iam.dev.forgerock.financial
+  # Configuration relation to the SBAT deployment
+  sbat:
+    # The GCP project in which the SBAT is deployed
+    projectId: sbat-dev
+    fqdn: dev.forgerock.financial
+
   # RaiseForStatus will exit if go resty returns an error in STRICT mode,
   # be it client error, server error or other. Turning off (false)
   # STRICT mode will simply warn of client/server errors.
   strict: true
   frPlatformAdminPassword: replace
 
-# The GCP project where the secret lives
-projectId: sbat-dev
+  namespace: dev
