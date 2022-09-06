@@ -1,5 +1,11 @@
 package types
 
+import "fmt"
+
+func ToStr(config Configuration) string {
+	return fmt.Sprintf("Config is %#v", config)
+}
+
 type Configuration struct {
 	Environment environment `mapstructure:"ENVIRONMENT"`
 	Identity    identity    `mapstructure:"IDENTITY"`

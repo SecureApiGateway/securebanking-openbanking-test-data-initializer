@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: test-init
+  name: test-data-init
 spec:
   schedule: "{{ .Values.cron }}"
   concurrencyPolicy: Forbid
@@ -13,13 +13,16 @@ spec:
         spec:
           containers:
             - name: test-init
-              image: eu.gcr.io/sbat-gcr-develop/securebanking/securebanking-test-data-initializer:latest
+              image: {{ tpl .Values.test_data_initializer_image_location . }}
               imagePullPolicy: Always
               env:
                 - name: ENVIRONMENT.STRICT
                   value: {{ .Values.environment.strict | quote }}
                 - name: ENVIRONMENT.TYPE
-                  value: {{ .Values.environment.type }}
+                  valueFrom:
+                    configMapKeyRef:
+                      name: securebanking-platform-config
+                      key: ENVIRONMENT_TYPE
                 - name: IDENTITY_PLATFORM_FQDN # variable to run the command shell, the shell doesn't support variables with dot.
                   valueFrom:
                     configMapKeyRef:
@@ -35,7 +38,7 @@ spec:
                     configMapKeyRef:
                       name: securebanking-platform-config
                       key: RS_FQDN
-                {{- if eq .Values.environment.type "FIDC" }}
+                {{- if eq .Values.environment.fr_platform.type "FIDC" }}
                 - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
@@ -48,7 +51,10 @@ spec:
                       key: cdm-admin-user
                 {{- else }}
                 - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
-                  value: {{ .Values.environment.frPlatformAdminPassword }}                  
+                  valueFrom:
+                    secretKeyRef:
+                      name: am-env-secrets
+                      key: AM_PASSWORDS_AMADMIN_CLEAR
                 {{ end }}              
                 - name: NAMESPACE
                   value: {{ .Values.environment.namespace }}

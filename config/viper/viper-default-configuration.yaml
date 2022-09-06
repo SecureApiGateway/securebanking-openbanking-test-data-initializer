@@ -11,6 +11,7 @@ ENVIRONMENT: # Root key to define the environment program properties
   # CDM value: CDM (Cloud Deployment Model) identity cloud platform
   # FIDC (Forgerock Identity Cloud) identity cloud platform
   TYPE: CDK
+  NAMESPACE: dev # Root key to get the namespace/environment to populate the user data
 HOSTS:
   RS_FQDN: rs.dev.forgerock.financial # RS host name
   IDENTITY_PLATFORM_FQDN: iam.dev.forgerock.financial # Identity platform Host name
@@ -22,4 +23,3 @@ USERS: # Root key users to be created or to authenticate and authorize flows
   FR_PLATFORM_ADMIN_PASSWORD: replace-me # Identity platform User password with admin grants (must exist previously)
   PSU_USERNAME: psu4test # Psu Username to (It will be created)
   PSU_PASSWORD: 0penBanking! # Psu user password (It will be created)
-NAMESPACE: dev # Root key to get the namespace/environment to populate the user data

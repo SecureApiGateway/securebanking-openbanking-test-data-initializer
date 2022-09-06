@@ -8,7 +8,6 @@ import (
 	"securebanking-test-data-initializer/pkg/httprest"
 	"securebanking-test-data-initializer/pkg/types"
 	"strconv"
-	"strings"
 
 	"go.uber.org/zap"
 )
@@ -80,10 +79,9 @@ func PopulateRSData(userId string) {
 		zap.L().Info("Skipping populate PSU Data to RS service")
 		return
 	}
-	namespace := getNamespace()
-	zap.S().Infow("*", "namespace", namespace)
+
 	path := common.Config.Hosts.Scheme + "://" + common.Config.Hosts.RsFQDN + "/admin/data/user/has-data?userId=" + userId
-	if mustPopulateUserData(path, namespace) {
+	if mustPopulateUserData(path) {
 		zap.S().Infow("Populate with RS Data the Payment Services User with the userId: " + userId)
 		params := "userId=" + userId + "&username=" + userId + "&profile=random"
 		path := common.Config.Hosts.Scheme + "://" + common.Config.Hosts.RsFQDN + "/admin/fake-data/generate?" + params
@@ -91,31 +89,23 @@ func PopulateRSData(userId string) {
 			"Accept":     "*/*",
 			"Connection": "keep-alive",
 		})
-		zap.S().Infow("Populate RS Data response", "namespace", namespace, "statusCode", s)
+		zap.S().Infow("Populate RS Data response", "path", path, "statusCode", s)
 	}
 	//}
 }
 
-func getNamespace() string {
-	ns := common.Config.Namespace
-	if strings.HasSuffix(ns, "-cdk") {
-		ns = strings.TrimSuffix(ns, "-cdk")
-	}
-	return ns
 
-}
-
-// mustPopulateUserData check is the user has data and if the environment is initialised, return true/false
-func mustPopulateUserData(path string, namespace string) bool {
+// mustPopulateUserData check if the user has data and if the environment is initialised, return true/false
+func mustPopulateUserData(path string) bool {
 	b, state := httprest.Client.GetRS(path, map[string]string{
 		"Accept": "*/*",
 	})
 	if state != http.StatusOK {
-		zap.S().Infow("No environment initialised", "namespace", namespace, "request status", state)
+		zap.S().Infow("No environment initialised", "path", path, "request status", state)
 		return false
 	}
 	value := string(b)
-	zap.S().Infow("User has data?", "namespace", namespace, "result", value)
+	zap.S().Infow("User has data?", "path", path, "result", value)
 	result, err := strconv.ParseBool(value)
 	if err != nil {
 		panic(err.Error())
