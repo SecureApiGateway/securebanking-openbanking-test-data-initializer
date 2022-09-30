@@ -12,9 +12,13 @@ spec:
       template:
         spec:
           containers:
-            - name: test-init
-              image: {{ tpl .Values.test_data_initializer_image_location . }}
-              imagePullPolicy: Always
+            - name: {{ .Chart.Name }}
+              {{- if .Values.deployment.imageOverride.enabled }}
+              image: "{{ .Values.deployment.imageOverride.repo }}/{{ .Values.deployment.imageOverride.test_data_initializer_image_name}}:{{ .Values.deployment.imageOverride.test_data_initializer_tag }}"
+              {{- else }}
+              image: "eu.gcr.io/sbat-gcr-release/securebanking/{{ .Chart.Name }}:{{ .Chart.AppVersion }}"
+              {{- end }}
+              imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
               env:
                 - name: ENVIRONMENT.STRICT
                   value: {{ .Values.environment.strict | quote }}
