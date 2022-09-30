@@ -1,17 +1,12 @@
 cron: "* * * * *"
 
-# ** Value Name:** iam_initializer_image_location
-#
-# ** Value Description** 
-# Location of the image in your docker repository. Override this in your own values file.
-# The template expects a tpl value, which enables the image location to be built up from
-# values containing repo location, image name etc. e.g.
-# 
-#  # Values from file
-#  helm_repository: eu.gcr.io/sbat-gcr-develop/securebanking
-#  test_data_initializer_image_name: secureopenbanking-uk-test-initializer
-#  test_data_initializer_image_tag: latest
-#  test_data_initializer_image_location: "{{ .Values.helm_repository }}/{{ .Values.test_data_initializer_image_name }}:{{ .Values.test_data_initializer_image_tag}}"
+deployment:
+  imageOverride:
+    enabled: true
+    repo: eu.gcr.io/sbat-gcr-develop/securebanking
+    test_data_initializer_image_name: securebanking-test-data-initializer
+    test_data_initializer_tag: latest
+  imagePullPolicy: Always
 
 # environment.type: It can be:
 # CDK value: (Cloud Developer's Kit) development identity platform
