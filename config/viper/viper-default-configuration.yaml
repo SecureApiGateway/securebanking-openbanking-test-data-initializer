@@ -12,6 +12,8 @@ ENVIRONMENT: # Root key to define the environment program properties
   # FIDC (Forgerock Identity Cloud) identity cloud platform
   TYPE: CDK
   NAMESPACE: dev # Root key to get the namespace/environment to populate the user data
+  PATHS:
+    CONFIG_AUTH_HELPER: config/defaults/auth-helper/  # Path for json to help with auth on FIdC platform
 HOSTS:
   RS_FQDN: rs.dev.forgerock.financial # RS host name
   IDENTITY_PLATFORM_FQDN: iam.dev.forgerock.financial # Identity platform Host name
