@@ -28,6 +28,7 @@ type environment struct {
 	Verbose bool   `mapstructure:"VERBOSE"`
 	Strict  bool   `mapstructure:"STRICT"`
 	Type    string `mapstructure:"TYPE"`
+	Paths   paths  `mapstructure:"PATHS"`
 }
 
 type users struct {
@@ -35,4 +36,8 @@ type users struct {
 	FrPlatformAdminPassword string `mapstructure:"FR_PLATFORM_ADMIN_PASSWORD"`
 	PsuUsername             string `mapstructure:"PSU_USERNAME"`
 	PsuPassword             string `mapstructure:"PSU_PASSWORD"`
+}
+
+type paths struct {
+	ConfigAuthHelper string `mapstructure:"CONFIG_AUTH_HELPER"`
 }

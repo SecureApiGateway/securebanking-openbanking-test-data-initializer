@@ -1,0 +1,98 @@
+{
+  "authId": "{{authId}}",
+  "callbacks": [
+    {
+      "type": "TextOutputCallback",
+      "output": [
+        {
+          "name": "message",
+          "value": "message-761"
+        },
+        {
+          "name": "messageType",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "type": "ConfirmationCallback",
+      "output": [
+        {
+          "name": "prompt",
+          "value": ""
+        },
+        {
+          "name": "messageType",
+          "value": 0
+        },
+        {
+          "name": "options",
+          "value": [
+            "Set up"
+          ]
+        },
+        {
+          "name": "optionType",
+          "value": -1
+        },
+        {
+          "name": "defaultOption",
+          "value": 0
+        }
+      ],
+      "input": [
+        {
+          "name": "IDToken2",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "type": "HiddenValueCallback",
+      "output": [
+        {
+          "name": "value",
+          "value": "false"
+        },
+        {
+          "name": "id",
+          "value": "skip-input-761"
+        }
+      ],
+      "input": [
+        {
+          "name": "IDToken3",
+          "value": "Skip"
+        }
+      ]
+    },
+    {
+      "type": "TextOutputCallback",
+      "output": [
+        {
+          "name": "message",
+          "value": "var skipContainer = document.createElement(\"div\");skipContainer.style = \"width:100%\";skipContainer.innerHTML = \"<button id='skip-link-761' class='btn btn-block btn-link' type='submit'>Skip for now</button>\";document.getElementById(\"skip-input-761\").parentNode.append(skipContainer);document.getElementsByClassName(\"callback-component\").forEach(  function (e) {    var message = e.firstElementChild;    if (message.firstChild && message.firstChild.nodeName == \"#text\" && message.firstChild.nodeValue.trim() == \"message-761\") {      message.align = \"center\";      message.innerHTML = \"<h2 class='h2'>Set up 2-step verification</h2><div style='margin-bottom:1em'>Protect your account by adding a second step after entering your password to verify it's you signing in.</div>\";    }  })"
+        },
+        {
+          "name": "messageType",
+          "value": "4"
+        }
+      ]
+    },
+    {
+      "type": "TextOutputCallback",
+      "output": [
+        {
+          "name": "message",
+          "value": "document.getElementById(\"skip-link-761\").onclick = function() {  document.getElementById(\"skip-input-761\").value = \"Skip\";  document.getElementById(\"loginButton_0\").click();  return false;}"
+        },
+        {
+          "name": "messageType",
+          "value": "4"
+        }
+      ]
+    }
+  ],
+  "status": 200,
+  "ok": true
+}
