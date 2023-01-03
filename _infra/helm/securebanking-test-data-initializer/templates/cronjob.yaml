@@ -47,7 +47,7 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       name: initializer-secret
-                      key: cdm-admin-password                 
+                      key: cdm-admin-password             
                 - name: USERS.FR_PLATFORM_ADMIN_USERNAME
                   valueFrom:
                     secretKeyRef:
