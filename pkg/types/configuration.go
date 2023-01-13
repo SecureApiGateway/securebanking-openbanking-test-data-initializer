@@ -34,6 +34,7 @@ type environment struct {
 type users struct {
 	FrPlatformAdminUsername string `mapstructure:"FR_PLATFORM_ADMIN_USERNAME"`
 	FrPlatformAdminPassword string `mapstructure:"FR_PLATFORM_ADMIN_PASSWORD"`
+	PsuUserId               string `mapstructure:"PSU_USER_ID"`
 	PsuUsername             string `mapstructure:"PSU_USERNAME"`
 	PsuPassword             string `mapstructure:"PSU_PASSWORD"`
 }

@@ -2,14 +2,13 @@ package rs
 
 import (
 	"encoding/json"
+	"go.uber.org/zap"
 	"net/http"
 	"net/url"
 	"securebanking-test-data-initializer/pkg/common"
 	"securebanking-test-data-initializer/pkg/httprest"
 	"securebanking-test-data-initializer/pkg/types"
 	"strconv"
-
-	"go.uber.org/zap"
 )
 
 // CreatePSU - create the psu user if necessary and always return the userId if exist to populate de user data into RS
@@ -23,6 +22,7 @@ func CreatePSU() string {
 	zap.L().Info("Creating PSU (Payment Services User)")
 
 	user := &PSU{
+		UserId:    common.Config.Users.PsuUserId,
 		UserName:  common.Config.Users.PsuUsername,
 		SN:        "Payment Services User",
 		GivenName: "PSU",
@@ -83,7 +83,7 @@ func PopulateRSData(userId string) {
 	path := common.Config.Hosts.Scheme + "://" + common.Config.Hosts.RsFQDN + "/admin/data/user/has-data?userId=" + userId
 	if mustPopulateUserData(path) {
 		zap.S().Infow("Populate with RS Data the Payment Services User with the userId: " + userId)
-		params := "userId=" + userId + "&username=" + userId + "&profile=random"
+		params := "userId=" + userId + "&username=" + common.Config.Users.PsuUsername + "&profile=random"
 		path := common.Config.Hosts.Scheme + "://" + common.Config.Hosts.RsFQDN + "/admin/fake-data/generate?" + params
 		s := httprest.Client.PostRS(path, map[string]string{
 			"Accept":     "*/*",
@@ -93,7 +93,6 @@ func PopulateRSData(userId string) {
 	}
 	//}
 }
-
 
 // mustPopulateUserData check if the user has data and if the environment is initialised, return true/false
 func mustPopulateUserData(path string) bool {
