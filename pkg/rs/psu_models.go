@@ -1,6 +1,7 @@
 package rs
 
 type PSU struct {
+	UserId    string `json:"_id"`
 	UserName  string `json:"userName"`
 	SN        string `json:"sn"`
 	GivenName string `json:"givenName"`
