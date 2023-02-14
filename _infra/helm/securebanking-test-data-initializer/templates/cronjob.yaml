@@ -37,11 +37,6 @@ spec:
                     configMapKeyRef:
                       name: securebanking-platform-config
                       key: IDENTITY_PLATFORM_FQDN
-                - name: HOSTS.RS_FQDN
-                  valueFrom:
-                    configMapKeyRef:
-                      name: securebanking-platform-config
-                      key: RS_FQDN
                 {{- if eq .Values.environment.fr_platform.type "FIDC" }}
                 - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
                   valueFrom:

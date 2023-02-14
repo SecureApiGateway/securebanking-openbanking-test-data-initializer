@@ -80,11 +80,11 @@ func PopulateRSData(userId string) {
 		return
 	}
 
-	path := common.Config.Hosts.Scheme + "://" + common.Config.Hosts.RsFQDN + "/admin/data/user/has-data?userId=" + userId
+	path := common.Config.Hosts.RsBaseUri + "/admin/data/user/has-data?userId=" + userId
 	if mustPopulateUserData(path) {
 		zap.S().Infow("Populate with RS Data the Payment Services User with the userId: " + userId)
 		params := "userId=" + userId + "&username=" + common.Config.Users.PsuUsername + "&profile=random"
-		path := common.Config.Hosts.Scheme + "://" + common.Config.Hosts.RsFQDN + "/admin/fake-data/generate?" + params
+		path := common.Config.Hosts.RsBaseUri + "/admin/fake-data/generate?" + params
 		s := httprest.Client.PostRS(path, map[string]string{
 			"Accept":     "*/*",
 			"Connection": "keep-alive",
