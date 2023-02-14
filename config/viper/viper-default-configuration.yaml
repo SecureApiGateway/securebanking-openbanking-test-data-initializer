@@ -15,7 +15,7 @@ ENVIRONMENT: # Root key to define the environment program properties
   PATHS:
     CONFIG_AUTH_HELPER: config/defaults/auth-helper/  # Path for json to help with auth on FIdC platform
 HOSTS:
-  RS_FQDN: rs.dev.forgerock.financial # RS host name
+  RS_BASE_URI: http://securebanking-openbanking-uk-rs:8080 # Base URI for RS API
   IDENTITY_PLATFORM_FQDN: iam.dev.forgerock.financial # Identity platform Host name
   SCHEME: https # URI scheme, Syntax part of a generic URI
 IDENTITY: # Root key for parameter values related with identity platform configuration

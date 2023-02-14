@@ -15,7 +15,7 @@ type Configuration struct {
 }
 
 type hosts struct {
-	RsFQDN               string `mapstructure:"RS_FQDN"`
+	RsBaseUri            string `mapstructure:"RS_BASE_URI"`
 	IdentityPlatformFQDN string `mapstructure:"IDENTITY_PLATFORM_FQDN"`
 	Scheme               string `mapstructure:"SCHEME"`
 }
