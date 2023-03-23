@@ -1,4 +1,4 @@
-deploymentType: cronjob
+deploymentType: CronJob
 cron: "* * * * *"
 
 deployment:
