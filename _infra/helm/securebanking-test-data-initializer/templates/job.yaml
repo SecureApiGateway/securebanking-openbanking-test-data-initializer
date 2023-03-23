@@ -1,0 +1,69 @@
+{{- if eq .Values.deploymentType "Job" }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: test-data-init
+spec:
+  template:
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- if .Values.deployment.imageOverride.enabled }}
+          image: "{{ .Values.deployment.imageOverride.repo }}/{{ .Values.deployment.imageOverride.test_data_initializer_image_name}}:{{ .Values.deployment.imageOverride.test_data_initializer_tag }}"
+          {{- else }}
+          image: "eu.gcr.io/sbat-gcr-release/securebanking/{{ .Chart.Name }}:{{ .Chart.AppVersion }}"
+          {{- end }}
+          imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+          env:
+            - name: ENVIRONMENT.STRICT
+              value: {{ .Values.environment.strict | quote }}
+            - name: ENVIRONMENT.TYPE
+              valueFrom:
+                configMapKeyRef:
+                  name: securebanking-platform-config
+                  key: ENVIRONMENT_TYPE
+            - name: IDENTITY_PLATFORM_FQDN # variable to run the command shell, the shell doesn't support variables with dot.
+              valueFrom:
+                configMapKeyRef:
+                  name: securebanking-platform-config
+                  key: IDENTITY_PLATFORM_FQDN
+            - name: HOSTS.IDENTITY_PLATFORM_FQDN
+              valueFrom:
+                configMapKeyRef:
+                  name: securebanking-platform-config
+                  key: IDENTITY_PLATFORM_FQDN
+            {{- if eq .Values.environment.fr_platform.type "FIDC" }}
+            - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: initializer-secret
+                  key: cdm-admin-password             
+            - name: USERS.FR_PLATFORM_ADMIN_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: initializer-secret
+                  key: cdm-admin-user
+            {{- else }}
+            - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: am-env-secrets
+                  key: AM_PASSWORDS_AMADMIN_CLEAR
+            {{ end }}              
+            - name: NAMESPACE
+              value: {{ .Values.environment.namespace }}
+          command: [ "/bin/sh", "-c" ]
+          args:
+            - |                 
+              echo "IDENTITY_PLATFORM_FQDN $IDENTITY_PLATFORM_FQDN"
+              until $(curl -X GET --output /dev/null --silent --head --fail -H "X-OpenIDM-Username: anonymous" \
+              -H "X-OpenIDM-Password: anonymous" -H "X-OpenIDM-NoSession: true" \
+              https://$IDENTITY_PLATFORM_FQDN/openidm/info/ping)
+              do
+              echo "IDM not ready"
+              sleep 10
+              done
+              ./initialize
+      restartPolicy: Never
+  backoffLimit: 3
+{{ end }}
