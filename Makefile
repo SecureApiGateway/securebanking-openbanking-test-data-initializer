@@ -1,5 +1,6 @@
-service := securebanking-test-data-initializer
-gcr-repo := sbat-gcr-develop
+name := securebanking-test-data-initializer
+repo := sbat-gcr-develop
+helm_repo := forgerock-helm/secure-api-gateway/securebanking-test-data-initializer/
 
 .PHONY: all
 all: mod build
@@ -27,9 +28,19 @@ ifndef tag
 	$(eval tag=latest)
 endif
 	env GOOS=linux GOARCH=amd64 go build -o initialize
-	docker buildx build --platform linux/amd64 -t eu.gcr.io/${gcr-repo}/securebanking/${service}:${tag} .
-	docker push eu.gcr.io/${gcr-repo}/securebanking/${service}:${tag}
-ifdef release-repo
-	docker tag eu.gcr.io/${gcr-repo}/securebanking/${service}:${tag} eu.gcr.io/${release-repo}/securebanking/${service}:${tag}
-	docker push eu.gcr.io/${release-repo}/securebanking/${service}:${tag}
+	docker buildx build --platform linux/amd64 -t eu.gcr.io/${repo}/securebanking/${name}:${tag} .
+	docker push eu.gcr.io/${repo}/securebanking/${name}:${tag}
+
+package_helm:
+ifndef version
+	$(error A version must be supplied, Eg. make helm version=1.0.0)
 endif
+	helm dependency update _infra/helm/${name}
+	helm template _infra/helm/${name}
+	helm package _infra/helm/${name} --version ${version} --app-version ${version}
+
+publish_helm:
+ifndef version
+	$(error A version must be supplied, Eg. make helm version=1.0.0)
+endif
+	jf rt upload  ./*-${version}.tgz ${helm_repo}

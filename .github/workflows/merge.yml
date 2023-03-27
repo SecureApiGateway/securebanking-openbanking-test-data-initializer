@@ -23,7 +23,7 @@ jobs:
 
       - uses: google-github-actions/auth@v0
         with:
-          credentials_json: ${{ secrets.GCR_KEY }}
+          credentials_json: ${{ secrets.GCR_CREDENTIALS_JSON }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0
@@ -35,5 +35,5 @@ jobs:
       - name: docker build
         run: |
           make docker tag=${{ env.GIT_SHA_SHORT }}
-          docker tag eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/${{ env.SERVICE_NAME }}:${{ env.GIT_SHA_SHORT }} eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/${{ env.SERVICE_NAME }}:latest
-          docker push eu.gcr.io/${{ secrets.DEV_REPO }}/securebanking/${{ env.SERVICE_NAME }}:latest
+          docker tag eu.gcr.io/${{ secrets.GCR_DEV_REPO }}/securebanking/${{ env.SERVICE_NAME }}:${{ env.GIT_SHA_SHORT }} eu.gcr.io/${{ secrets.GCR_DEV_REPO }}/securebanking/${{ env.SERVICE_NAME }}:latest
+          docker push --all-tags eu.gcr.io/${{ secrets.GCR_DEV_REPO }}/securebanking/${{ env.SERVICE_NAME }}
