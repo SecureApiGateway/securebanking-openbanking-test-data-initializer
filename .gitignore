@@ -8,3 +8,4 @@ temp
 config/viper/*
 !viper-default-configuration.yaml
 BohoDockerfile
+*.tgz
