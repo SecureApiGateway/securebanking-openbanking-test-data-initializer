@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: test-user-account-creator
+  name: {{ .Chart.Name }}
 spec:
   schedule: "{{ .Values.cron }}"
   concurrencyPolicy: Forbid
