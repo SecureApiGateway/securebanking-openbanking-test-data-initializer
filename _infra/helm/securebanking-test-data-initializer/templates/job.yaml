@@ -22,17 +22,17 @@ spec:
             - name: ENVIRONMENT.TYPE
               valueFrom:
                 configMapKeyRef:
-                  name: securebanking-platform-config
+                  name: deployment-config
                   key: ENVIRONMENT_TYPE
             - name: IDENTITY_PLATFORM_FQDN # variable to run the command shell, the shell doesn't support variables with dot.
               valueFrom:
                 configMapKeyRef:
-                  name: securebanking-platform-config
+                  name: deployment-config
                   key: IDENTITY_PLATFORM_FQDN
             - name: HOSTS.IDENTITY_PLATFORM_FQDN
               valueFrom:
                 configMapKeyRef:
-                  name: securebanking-platform-config
+                  name: deployment-config
                   key: IDENTITY_PLATFORM_FQDN
             {{- if eq .Values.environment.fr_platform.type "FIDC" }}
             - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
