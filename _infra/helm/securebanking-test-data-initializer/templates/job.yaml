@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: test-user-account-creator
+  name: {{ .Chart.Name }}
   annotations:
     "helm.sh/hook": post-install
 spec:
