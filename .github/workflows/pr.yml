@@ -7,7 +7,7 @@ on:
       - README.md
 
 env:
-  SERVICE_NAME: securebanking-test-data-initializer
+  SERVICE_NAME: test-user-account-creator
   PR_NUMBER: pr-${{ github.event.number }}
 
 jobs:
@@ -35,3 +35,17 @@ jobs:
       - name: docker build
         run: |
           make docker tag=${{ env.PR_NUMBER }}
+
+      - name: Create lowercase Github Username
+        id: toLowerCase
+        run: echo "GITHUB_USER=$(echo ${{github.actor}} | tr '[:upper:]' '[:lower:]')" >> ${GITHUB_ENV}
+
+      - name: 'Deploy Service'
+        uses: codefresh-io/codefresh-pipeline-runner@master
+        with:
+          args: '-v TAG=${{ env.PR_NUMBER }} -v ARGO_VALUES_PREFIX=testUserAccountCreator -v SERVICE_NAME=test-user-account-creator -v ENVIRONMENT=${{ env.GITHUB_USER }} -v BRANCH=${{ github.head_ref }}'
+        env:
+          PIPELINE_NAME: 'ForgeCloud/sbat-infra/service-build'
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          TRIGGER_NAME: github-actions-trigger-test-data
+        id: run-pipeline
