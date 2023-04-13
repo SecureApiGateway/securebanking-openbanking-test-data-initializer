@@ -8,7 +8,7 @@ spec:
   schedule: "{{ .Values.cronjob.schedule }}"
   concurrencyPolicy: {{ .Values.cronjob.concurrencyPolicy }}
   successfulJobsHistoryLimit: {{ .Values.cronjob.seccessfulJobHistoryLimit}}
-  startingDeadlineSeconds: {{. Values.cronjob.startingDeadlineSeconds}}
+  startingDeadlineSeconds: {{ .Values.cronjob.startingDeadlineSeconds}}
   jobTemplate:
     spec:
       template:
