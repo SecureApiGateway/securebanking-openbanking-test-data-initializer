@@ -1,33 +1,40 @@
-deploymentType: Job
-cron: "* * * * *"
+---
+cronjob:
+  environment:
+    # CDK value: (Cloud Developer's Kit) development identity platform
+    # CDM value: CDM (Cloud Deployment Model) identity cloud platform
+    # FIDC value: FIDC (Forgerock Identity Cloud) identity cloud platform
+    frPlatformType: FIDC
+    # RaiseForStatus will exit if go resty returns an error in STRICT mode,
+    # be it client error, server error or other. Turning off (false)
+    # STRICT mode will simply warn of client/server errors.
+    strict: true
+  image:
+    # repo: 
+    # tag:
+    imagePullPolicy: Always
+  namespace: dev
+  schedule: "* * * * *"
+  seccessfulJobHistoryLimit: 1
+  startingDeadlineSeconds: 180
+  restartPolicy: OnFailure
 
 deployment:
-  imageOverride:
-    enabled: true
-    repo: eu.gcr.io/sbat-gcr-develop/securebanking
-    test_data_initializer_image_name: securebanking-test-data-initializer
-    test_data_initializer_tag: latest
-  imagePullPolicy: Always
+  type: Job
 
-# environment.type: It can be:
-# CDK value: (Cloud Developer's Kit) development identity platform
-# CDM value: CDM (Cloud Deployment Model) identity cloud platform
-# FIDC value: FIDC (Forgerock Identity Cloud) identity cloud platform
-environment:
-  # Configuration relating to the FR Platform
-  fr_platform:
-    type: FIDC
-    fqdn: iam.dev.forgerock.financial
-  # Configuration relation to the SBAT deployment
-  sbat:
-    # The GCP project in which the SBAT is deployed
-    projectId: sbat-dev
-    fqdn: dev.forgerock.financial
-
-  # RaiseForStatus will exit if go resty returns an error in STRICT mode,
-  # be it client error, server error or other. Turning off (false)
-  # STRICT mode will simply warn of client/server errors.
-  strict: true
-  frPlatformAdminPassword: replace
-
+job:
+  environment:
+    # CDK value: (Cloud Developer's Kit) development identity platform
+    # CDM value: CDM (Cloud Deployment Model) identity cloud platform
+    # FIDC value: FIDC (Forgerock Identity Cloud) identity cloud platform
+    frPlatformType: FIDC
+    # RaiseForStatus will exit if go resty returns an error in STRICT mode,
+    # be it client error, server error or other. Turning off (false)
+    # STRICT mode will simply warn of client/server errors.
+    strict: true
+  image:
+    # repo: 
+    # tag:
+    imagePullPolicy: Always
   namespace: dev
+  restartPolicy: Never

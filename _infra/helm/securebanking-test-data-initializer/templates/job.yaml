@@ -1,4 +1,5 @@
-{{- if eq .Values.deploymentType "Job" }}
+---
+{{- if eq .Values.deployment.type "Job" }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -10,15 +11,11 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          {{- if .Values.deployment.imageOverride.enabled }}
-          image: "{{ .Values.deployment.imageOverride.repo }}/{{ .Values.deployment.imageOverride.test_data_initializer_image_name}}:{{ .Values.deployment.imageOverride.test_data_initializer_tag }}"
-          {{- else }}
-          image: "eu.gcr.io/sbat-gcr-release/securebanking/{{ .Chart.Name }}:{{ .Chart.AppVersion }}"
-          {{- end }}
-          imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+          image: "{{ .Values.cronjob.image.repo }}:{{ default .Chart.AppVersion .Values.cronjob.image.tag }}"
+          imagePullPolicy: {{ .Values.cronjob.image.imagePullPolicy }}
           env:
             - name: ENVIRONMENT.STRICT
-              value: {{ .Values.environment.strict | quote }}
+              value: {{ .Values.job.environment.strict | quote }}
             - name: ENVIRONMENT.TYPE
               valueFrom:
                 configMapKeyRef:
@@ -34,7 +31,7 @@ spec:
                 configMapKeyRef:
                   name: deployment-config
                   key: IDENTITY_PLATFORM_FQDN
-            {{- if eq .Values.environment.fr_platform.type "FIDC" }}
+            {{- if eq .Values.job.environment.frPlatformType "FIDC" }}
             - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -53,7 +50,7 @@ spec:
                   key: AM_PASSWORDS_AMADMIN_CLEAR
             {{ end }}              
             - name: NAMESPACE
-              value: {{ .Values.environment.namespace }}
+              value: {{ .Values.job.namespace }}
           command: [ "/bin/sh", "-c" ]
           args:
             - |                 
@@ -66,6 +63,7 @@ spec:
               sleep 10
               done
               ./initialize
-      restartPolicy: Never
+      restartPolicy: {{ .Values.cronjob.restartPolicy }}
+
   backoffLimit: 3
 {{ end }}

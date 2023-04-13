@@ -1,28 +1,25 @@
-{{- if eq .Values.deploymentType "CronJob" }}
+---
+{{- if eq .Values.deployment.type "CronJob" }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ .Chart.Name }}
 spec:
-  schedule: "{{ .Values.cron }}"
-  concurrencyPolicy: Forbid
-  successfulJobsHistoryLimit: 1
-  startingDeadlineSeconds: 180
+  schedule: "{{ .Values.cronjob.schedule }}"
+  concurrencyPolicy: {{ .Values.cronjob.concurrencyPolicy }}
+  successfulJobsHistoryLimit: {{ .Values.cronjob.seccessfulJobHistoryLimit}}
+  startingDeadlineSeconds: {{. Values.cronjob.startingDeadlineSeconds}}
   jobTemplate:
     spec:
       template:
         spec:
           containers:
             - name: {{ .Chart.Name }}
-              {{- if .Values.deployment.imageOverride.enabled }}
-              image: "{{ .Values.deployment.imageOverride.repo }}/{{ .Values.deployment.imageOverride.test_data_initializer_image_name}}:{{ .Values.deployment.imageOverride.test_data_initializer_tag }}"
-              {{- else }}
-              image: "eu.gcr.io/sbat-gcr-release/securebanking/{{ .Chart.Name }}:{{ .Chart.AppVersion }}"
-              {{- end }}
-              imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+              image: "{{ .Values.cronjob.image.repo }}:{{ default .Chart.AppVersion .Values.cronjob.image.tag }}"
+              imagePullPolicy: {{ .Values.cronjob.image.imagePullPolicy }}
               env:
                 - name: ENVIRONMENT.STRICT
-                  value: {{ .Values.environment.strict | quote }}
+                  value: {{ .Values.cronjob.environment.strict | quote }}
                 - name: ENVIRONMENT.TYPE
                   valueFrom:
                     configMapKeyRef:
@@ -38,7 +35,7 @@ spec:
                     configMapKeyRef:
                       name: deployment-config
                       key: IDENTITY_PLATFORM_FQDN
-                {{- if eq .Values.environment.fr_platform.type "FIDC" }}
+                {{- if eq .Values.environment.frPlatformType "FIDC" }}
                 - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
@@ -57,7 +54,7 @@ spec:
                       key: AM_PASSWORDS_AMADMIN_CLEAR
                 {{ end }}              
                 - name: NAMESPACE
-                  value: {{ .Values.environment.namespace }}
+                  value: {{ .Values.cronjob.namespace }}
               command: [ "/bin/sh", "-c" ]
               args:
                 - |                 
@@ -70,5 +67,5 @@ spec:
                   sleep 10
                   done
                   ./initialize
-          restartPolicy: OnFailure
+          restartPolicy: {{ .Values.cronjob.restartPolicy }}
 {{ end }}
