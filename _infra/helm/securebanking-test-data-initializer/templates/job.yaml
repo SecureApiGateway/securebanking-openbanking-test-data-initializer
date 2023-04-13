@@ -64,6 +64,5 @@ spec:
               done
               ./initialize
       restartPolicy: {{ .Values.cronjob.restartPolicy }}
-
-  backoffLimit: 3
+  backoffLimit: {{ .Values.cronjob.backoffLimit }}
 {{ end }}

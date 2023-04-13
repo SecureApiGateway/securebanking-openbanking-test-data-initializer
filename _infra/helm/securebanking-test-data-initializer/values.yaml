@@ -23,6 +23,7 @@ deployment:
   type: Job
 
 job:
+  backoffLimit: 3
   environment:
     # CDK value: (Cloud Developer's Kit) development identity platform
     # CDM value: CDM (Cloud Deployment Model) identity cloud platform
