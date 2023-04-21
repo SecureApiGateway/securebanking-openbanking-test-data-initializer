@@ -11,8 +11,8 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.cronjob.image.repo }}:{{ default .Chart.AppVersion .Values.cronjob.image.tag }}"
-          imagePullPolicy: {{ .Values.cronjob.image.imagePullPolicy }}
+          image: "{{ .Values.job.image.repo }}:{{ default .Chart.AppVersion .Values.job.image.tag }}"
+          imagePullPolicy: {{ .Values.job.image.imagePullPolicy }}
           env:
             - name: ENVIRONMENT.STRICT
               value: {{ .Values.job.environment.strict | quote }}
@@ -63,6 +63,6 @@ spec:
               sleep 10
               done
               ./initialize
-      restartPolicy: {{ .Values.cronjob.restartPolicy }}
-  backoffLimit: {{ .Values.cronjob.backoffLimit }}
+      restartPolicy: {{ .Values.job.restartPolicy }}
+  backoffLimit: {{ .Values.job.backoffLimit }}
 {{ end }}

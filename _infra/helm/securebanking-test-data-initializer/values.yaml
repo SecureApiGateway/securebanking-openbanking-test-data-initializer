@@ -15,17 +15,25 @@ cronjob:
     # The values for each of these should be supplied in the .Values folder of an individual deployment within the specification repository - See https://github.com/SecureApiGateway/SecureApiGateway/wiki/Deployment#repositories
     # repo:
     # tag:
+    # We want to pull the image down each time we do a deployment, required if using 'latest' tag
     imagePullPolicy: Always
+  # Namespace to install in
   namespace: dev
+  # When the cronjob should run - default is every minute
   schedule: "* * * * *"
+  # How many successful jobs should be kept for histroy 
   seccessfulJobHistoryLimit: 1
+  # Time in seconds to deplay starting the cronjob once deployed
   startingDeadlineSeconds: 180
+  # When to restart the pod
   restartPolicy: OnFailure
 
 deployment:
+  # Select either Job or Cronjob, job should be used in production environment
   type: Job
 
 job:
+  # How many times the pod can fail before declared unhealthy
   backoffLimit: 3
   environment:
     # CDK value: (Cloud Developer's Kit) development identity platform
@@ -42,6 +50,9 @@ job:
     # The values for each of these should be supplied in the .Values folder of an individual deployment within the specification repository - See https://github.com/SecureApiGateway/SecureApiGateway/wiki/Deployment#repositories
     # repo:
     # tag:
+    # We want to pull the image down each time we do a deployment, required if using 'latest' tag
     imagePullPolicy: Always
+  # Namespace to install in
   namespace: dev
+  # When to restart the pod
   restartPolicy: Never
