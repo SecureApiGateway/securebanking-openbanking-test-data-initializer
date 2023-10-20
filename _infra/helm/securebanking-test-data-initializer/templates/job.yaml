@@ -8,6 +8,10 @@ metadata:
     "helm.sh/hook": post-install
 spec:
   template:
+    metadata:
+      labels:
+        appversion: {{ .Chart.appVersion }}
+        chartversion: {{ .Chart.version }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
