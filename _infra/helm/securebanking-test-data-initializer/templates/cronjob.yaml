@@ -14,8 +14,8 @@ spec:
       template:
         metadata:
           labels:
-            appversion: {{ .Chart.appVersion }}
-            chartversion: {{ .Chart.version }}
+            appversion: {{ .Chart.AppVersion }}
+            chartversion: {{ .Chart.Version }}
         spec:
           containers:
             - name: {{ .Chart.Name }}
