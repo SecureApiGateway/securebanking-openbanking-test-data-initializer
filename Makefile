@@ -1,5 +1,5 @@
 name := securebanking-test-data-initializer
-repo := sbat-gcr-develop
+repo := europe-west4-docker.pkg.dev/sbat-gcr-develop/sapig-docker-artifact
 helm_repo := forgerock-helm/secure-api-gateway/securebanking-test-data-initializer/
 
 .PHONY: all
@@ -28,8 +28,8 @@ ifndef tag
 	$(eval tag=latest)
 endif
 	env GOOS=linux GOARCH=amd64 go build -o initialize
-	docker buildx build --platform linux/amd64 -t eu.gcr.io/${repo}/securebanking/${name}:${tag} .
-	docker push eu.gcr.io/${repo}/securebanking/${name}:${tag}
+	docker buildx build --platform linux/amd64 -t ${repo}/securebanking/${name}:${tag} .
+	docker push ${repo}/securebanking/${name}:${tag}
 
 package_helm:
 ifndef version
