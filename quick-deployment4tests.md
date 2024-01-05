@@ -1,14 +1,14 @@
 ## How tests the changes
 1. `make docker`
 2. ```shell
-   docker tag eu.gcr.io/sbat-gcr-develop/securebanking/securebanking-test-data-initializer:latest eu.gcr.io/sbat-gcr-release/securebanking/securebanking-test-data-initializer:latest
+   docker tag europe-west4-docker.pkg.dev/sbat-gcr-develop/sapig-docker-artifact/securebanking/securebanking-test-data-initializer:latest europe-west4-docker.pkg.dev/sbat-gcr-release/sapig-docker-artifact/securebanking/securebanking-test-data-initializer:latest
    ```
 3. ```shell
    docker push !$[+TAB]
    ```
    Or
    ```shell
-   docker push eu.gcr.io/sbat-gcr-release/securebanking/securebanking-test-data-initializer:latest
+   docker push europe-west4-docker.pkg.dev/sbat-gcr-release/sapig-docker-artifact/securebanking/securebanking-test-data-initializer:latest
    ```
 4. Change kubernetes context to `sbat-master-dev`
 5. Set the namespace to the developer namespace
