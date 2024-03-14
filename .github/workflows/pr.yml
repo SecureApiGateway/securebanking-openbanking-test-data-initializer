@@ -54,11 +54,21 @@ jobs:
       - name: Create lowercase Github Username
         run: echo "GITHUB_USER=$(echo ${{github.actor}} | tr '[:upper:]' '[:lower:]')" >> ${GITHUB_ENV}
 
-      - name: 'Deploy Service'
+      - name: 'Deploy Service to OB'
         uses: codefresh-io/codefresh-pipeline-runner@master
         if: github.actor != 'dependabot[bot]'
         with:
           args: '-v TAG=${{ env.PR_NUMBER }} -v ARGO_VALUES_PREFIX=testUserAccountCreator -v SERVICE_NAME=test-user-account-creator -v ENVIRONMENT=${{ env.GITHUB_USER }}-ob -v NEWBRANCH=${{ github.head_ref }}'
+        env:
+          PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-ob-service-build'
+          CF_API_KEY: ${{ secrets.CF_API_KEY }}
+          TRIGGER_NAME: github-actions-trigger-test-data
+        id: run-pipeline
+      - name: 'Deploy Service to Core'
+        uses: codefresh-io/codefresh-pipeline-runner@master
+        if: github.actor != 'dependabot[bot]'
+        with:
+          args: '-v TAG=${{ env.PR_NUMBER }} -v ARGO_VALUES_PREFIX=testUserAccountCreator -v SERVICE_NAME=test-user-account-creator -v ENVIRONMENT=${{ env.GITHUB_USER }}-core -v NEWBRANCH=${{ github.head_ref }}'
         env:
           PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-ob-service-build'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
