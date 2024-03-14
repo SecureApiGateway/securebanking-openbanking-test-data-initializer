@@ -50,17 +50,17 @@ spec:
             - name: ENVIRONMENT.TYPE
               valueFrom:
                 configMapKeyRef:
-                  name: deployment-config
-                  key: ENVIRONMENT_TYPE
+                  name: core-deployment-config
+                  key: CLOUD_TYPE
             - name: IDENTITY_PLATFORM_FQDN # variable to run the command shell, the shell doesn't support variables with dot.
               valueFrom:
                 configMapKeyRef:
-                  name: deployment-config
+                  name: core-deployment-config
                   key: IDENTITY_PLATFORM_FQDN
             - name: HOSTS.IDENTITY_PLATFORM_FQDN
               valueFrom:
                 configMapKeyRef:
-                  name: deployment-config
+                  name: core-deployment-config
                   key: IDENTITY_PLATFORM_FQDN
             - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
               valueFrom:
@@ -117,17 +117,17 @@ spec:
                 - name: ENVIRONMENT.TYPE
                   valueFrom:
                     configMapKeyRef:
-                      name: deployment-config
-                      key: ENVIRONMENT_TYPE
+                      name: core-deployment-config
+                      key: CLOUD_TYPE
                 - name: IDENTITY_PLATFORM_FQDN # variable to run the command shell, the shell doesn't support variables with dot.
                   valueFrom:
                     configMapKeyRef:
-                      name: deployment-config
+                      name: core-deployment-config
                       key: IDENTITY_PLATFORM_FQDN
                 - name: HOSTS.IDENTITY_PLATFORM_FQDN
                   valueFrom:
                     configMapKeyRef:
-                      name: deployment-config
+                      name: core-deployment-config
                       key: IDENTITY_PLATFORM_FQDN
                 - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
                   valueFrom:
@@ -161,9 +161,9 @@ These are the environment variables declared in the `job.yaml` ;
 | Key | Default | Description | Source | Optional |
 |-----|---------|-------------|--------|----------|
 | ENVIRONMENT.STRICT | true | If true, any errors will cause the job to exit | cronjob.environment.strict |
-| ENVIRONMENT.TYPE | FIDC | Type of Cloud Instance being ran, depends on what environment you are running | deployment-config |
-| IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | deployment-config |
-| HOSTS.IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | deployment-config |
+| ENVIRONMENT.TYPE | FIDC | Type of Cloud Instance being ran, depends on what environment you are running | core-deployment-config |
+| IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | core-deployment-config |
+| HOSTS.IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | core-deployment-config |
 | USERS.FR_PLATFORM_ADMIN_PASSWORD | | Password for cloud instance. NOTE - This password can be used for `initializer-secret` or `am-env-secrets` depending on `ENVIRONMENT.TYPE` set | If `ENVIRONMENT.TYPE=FIDC` initializer-secret/cdm-admin-password else am-env-secrets/AM_PASSWORDS_AMADMIN_CLEAR |
 | USERS.FR_PLATFORM_ADMIN_USERNAME | | Username for cloud instance, only populated if `ENVIRONMENT.TYPE=FIDC` | initializer-secret/cdm-admin-user |
 | NAMESPACE | dev | The namespace to install the object in | job.namespace |
@@ -172,9 +172,9 @@ These are the environment variables declared in the `cronjob.yaml` ;
 | Key | Default | Description | Source | Optional |
 |-----|---------|-------------|--------|----------|
 | ENVIRONMENT.STRICT | true | If true, any errors will cause the job to exit | cronjob.environment.strict |
-| ENVIRONMENT.TYPE | FIDC | Type of Cloud Instance being ran, depends on what environment you are running | deployment-config |
-| IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | deployment-config |
-| HOSTS.IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | deployment-config |
+| ENVIRONMENT.TYPE | FIDC | Type of Cloud Instance being ran, depends on what environment you are running | core-deployment-config |
+| IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | core-deployment-config |
+| HOSTS.IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | core-deployment-config |
 | USERS.FR_PLATFORM_ADMIN_PASSWORD | | Password for cloud instance. NOTE - This password can be used for `initializer-secret` or `am-env-secrets` depending on `ENVIRONMENT.TYPE` set | If `ENVIRONMENT.TYPE=FIDC` initializer-secret/cdm-admin-password else am-env-secrets/AM_PASSWORDS_AMADMIN_CLEAR |
 | USERS.FR_PLATFORM_ADMIN_USERNAME | | Username for cloud instance, only populated if `ENVIRONMENT.TYPE=FIDC` | initializer-secret/cdm-admin-user |
 | NAMESPACE | dev | The namespace to install the object in | job.namespace |
