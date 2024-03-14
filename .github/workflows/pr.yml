@@ -27,33 +27,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
       - name: Auth to GCP  
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.DEV_GAR_KEY }}
-
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2.1.0
-
         # Configure docker to use the gcloud command-line tool as a credential helper
       - name: Auth Docker
         run: |
           gcloud auth configure-docker europe-west4-docker.pkg.dev
-
       - name: docker build
         run: |
           make docker tag=${{ env.PR_NUMBER }}
 
-  deploy:
-    name: Deploy
+  deploy-ob:
+    name: Deploy OB
     needs: build
     runs-on: ubuntu-latest
     steps:
-      
       - name: Create lowercase Github Username
         run: echo "GITHUB_USER=$(echo ${{github.actor}} | tr '[:upper:]' '[:lower:]')" >> ${GITHUB_ENV}
-
       - name: 'Deploy Service to OB'
         uses: codefresh-io/codefresh-pipeline-runner@master
         if: github.actor != 'dependabot[bot]'
@@ -63,6 +57,13 @@ jobs:
           PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-ob-service-build'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           TRIGGER_NAME: github-actions-trigger-test-data
+  deploy-core:
+    name: Deploy Core
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create lowercase Github Username
+        run: echo "GITHUB_USER=$(echo ${{github.actor}} | tr '[:upper:]' '[:lower:]')" >> ${GITHUB_ENV}
       - name: 'Deploy Service to Core'
         uses: codefresh-io/codefresh-pipeline-runner@master
         if: github.actor != 'dependabot[bot]'
