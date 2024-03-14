@@ -63,7 +63,6 @@ jobs:
           PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-ob-service-build'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           TRIGGER_NAME: github-actions-trigger-test-data
-        id: run-pipeline
       - name: 'Deploy Service to Core'
         uses: codefresh-io/codefresh-pipeline-runner@master
         if: github.actor != 'dependabot[bot]'
@@ -73,4 +72,3 @@ jobs:
           PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-ob-service-build'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           TRIGGER_NAME: github-actions-trigger-test-data
-        id: run-pipeline
