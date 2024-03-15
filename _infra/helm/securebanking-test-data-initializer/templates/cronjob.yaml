@@ -27,30 +27,19 @@ spec:
                 - name: ENVIRONMENT.TYPE
                   valueFrom:
                     configMapKeyRef:
-                      name: deployment-config
-                      key: ENVIRONMENT_TYPE
+                      name: core-deployment-config
+                      key: CLOUD_TYPE
                 - name: IDENTITY_PLATFORM_FQDN # variable to run the command shell, the shell doesn't support variables with dot.
                   valueFrom:
                     configMapKeyRef:
-                      name: deployment-config
+                      name: core-deployment-config
                       key: IDENTITY_PLATFORM_FQDN
                 - name: HOSTS.IDENTITY_PLATFORM_FQDN
                   valueFrom:
                     configMapKeyRef:
-                      name: deployment-config
+                      name: core-deployment-config
                       key: IDENTITY_PLATFORM_FQDN
-                {{- if eq .Values.cronjob.environment.frPlatformType "FIDC" }}
-                - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: initializer-secret
-                      key: cdm-admin-password             
-                - name: USERS.FR_PLATFORM_ADMIN_USERNAME
-                  valueFrom:
-                    secretKeyRef:
-                      name: initializer-secret
-                      key: cdm-admin-user
-                {{- else }}
+                {{- if ne .Values.cronjob.environment.frPlatformType "FIDC" }}
                 - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:

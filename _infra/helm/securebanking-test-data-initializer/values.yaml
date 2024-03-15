@@ -1,6 +1,11 @@
 ---
 cronjob:
   environment:
+    # Environment Settings for SAPIG & Cloud Platform
+    # SAPIG
+    # core: base sapig
+    # ob: Open Banking specification of sapig
+    sapigType: core
     # CDK value: (Cloud Developer's Kit) development identity platform
     # CDM value: CDM (Cloud Deployment Model) identity cloud platform
     # FIDC value: FIDC (Forgerock Identity Cloud) identity cloud platform
@@ -36,6 +41,11 @@ job:
   # How many times the pod can fail before declared unhealthy
   backoffLimit: 3
   environment:
+    # Environment Settings for SAPIG & Cloud Platform
+    # SAPIG
+    # core: base sapig
+    # ob: Open Banking specification of sapig
+    sapigType: core
     # CDK value: (Cloud Developer's Kit) development identity platform
     # CDM value: CDM (Cloud Deployment Model) identity cloud platform
     # FIDC value: FIDC (Forgerock Identity Cloud) identity cloud platform
