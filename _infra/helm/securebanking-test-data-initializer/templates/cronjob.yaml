@@ -39,13 +39,24 @@ spec:
                     configMapKeyRef:
                       name: core-deployment-config
                       key: IDENTITY_PLATFORM_FQDN
-                {{- if ne .Values.cronjob.environment.frPlatformType "FIDC" }}
+                {{- if eq .Values.job.environment.frPlatformType "FIDC" }}
+                - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: initializer-secret
+                      key: cdm-admin-password
+                - name: USERS.FR_PLATFORM_ADMIN_USERNAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: initializer-secret
+                      key: cdm-admin-user
+                {{- else }}
                 - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: am-env-secrets
-                      key: AM_PASSWORDS_AMADMIN_CLEAR
-                {{ end }}              
+                      key: AM_PASSWORDS_AMADMIN_CLEAR      
+                {{ end }}            
                 - name: NAMESPACE
                   value: {{ .Values.cronjob.namespace }}
               command: [ "/bin/sh", "-c" ]
