@@ -39,7 +39,7 @@ spec:
                     configMapKeyRef:
                       name: core-deployment-config
                       key: IDENTITY_PLATFORM_FQDN
-                {{- if eq .Values.job.environment.frPlatformType "FIDC" }}
+                {{- if eq .Values.cronjob.environment.frPlatformType "FIDC" }}
                 - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
