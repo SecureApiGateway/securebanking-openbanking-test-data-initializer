@@ -61,7 +61,9 @@ func main() {
 	//to obtain cookies values
 	httprest.InitRestReaderWriter(session.Cookie, session.AuthToken.AccessToken)
 	userId := rs.CreatePSU()
-	rs.PopulateRSData(userId)
+	if common.Config.Environment.SapigType == "ob" {
+		rs.PopulateRSData(userId)
+	}
 }
 
 func loadLogger() {

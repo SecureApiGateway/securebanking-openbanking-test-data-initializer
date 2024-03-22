@@ -25,10 +25,11 @@ type identity struct {
 }
 
 type environment struct {
-	Verbose bool   `mapstructure:"VERBOSE"`
-	Strict  bool   `mapstructure:"STRICT"`
-	Type    string `mapstructure:"TYPE"`
-	Paths   paths  `mapstructure:"PATHS"`
+	Verbose   bool   `mapstructure:"VERBOSE"`
+	Strict    bool   `mapstructure:"STRICT"`
+	Type      string `mapstructure:"TYPE"`
+	Paths     paths  `mapstructure:"PATHS"`
+	SapigType string `mapstructure:"SAPIGTYPE"`
 }
 
 type users struct {

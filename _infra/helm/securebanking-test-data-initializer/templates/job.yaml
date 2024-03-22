@@ -18,6 +18,8 @@ spec:
           env:
             - name: ENVIRONMENT.STRICT
               value: {{ .Values.job.environment.strict | quote }}
+            - name: ENVIRONMENT.SAPIGTYPE
+              value: {{ .Values.job.environment.sapigType }}
             - name: ENVIRONMENT.TYPE
               valueFrom:
                 configMapKeyRef:
