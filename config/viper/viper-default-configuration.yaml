@@ -6,6 +6,10 @@ ENVIRONMENT: # Root key to define the environment program properties
   # be it client error, server error or other. Turning off STRICT mode will simply warn of client/server errors with no exit program.
   STRICT: true
   ONLY_CONFIG: false # this property is to have control on the program to print the configuration only without run the main program
+  # SAPIG
+  # core: base sapig
+  # ob: Open Banking specification of sapig
+  SAPIGTYPE: core  
   # TYPE: It can be the values set on platform constants (@See constants.go), currently CDK or CDM
   # CDK value: (Cloud Developer's Kit) development identity platform
   # CDM value: CDM (Cloud Deployment Model) identity cloud platform
