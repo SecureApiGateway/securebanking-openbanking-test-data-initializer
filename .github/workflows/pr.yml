@@ -70,6 +70,6 @@ jobs:
         with:
           args: '-v TAG=${{ env.PR_NUMBER }} -v ARGO_VALUES_PREFIX=testUserAccountCreator -v SERVICE_NAME=test-user-account-creator -v ENVIRONMENT=${{ env.GITHUB_USER }}-core -v NEWBRANCH=${{ github.head_ref }}'
         env:
-          PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-ob-service-build'
+          PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-core-service-build'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           TRIGGER_NAME: github-actions-trigger-test-data
