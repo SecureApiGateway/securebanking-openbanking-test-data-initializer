@@ -62,7 +62,9 @@ func main() {
 	httprest.InitRestReaderWriter(session.Cookie, session.AuthToken.AccessToken)
 	userId := rs.CreatePSU()
 	if common.Config.Environment.SapigType == "ob" {
+		fmt.Println("Attempt to populate RS Data..")
 		rs.PopulateRSData(userId)
+		fmt.Println("Successfully populated RS Dats....")
 	}
 }
 
