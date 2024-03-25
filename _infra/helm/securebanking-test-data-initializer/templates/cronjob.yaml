@@ -25,7 +25,7 @@ spec:
                 - name: ENVIRONMENT.STRICT
                   value: {{ .Values.cronjob.environment.strict | quote }}
                 - name: ENVIRONMENT.SAPIGTYPE
-                  value: {{ .Values.job.environment.sapigType }}
+                  value: {{ .Values.cronjob.environment.sapigType }}
                 - name: ENVIRONMENT.TYPE
                   valueFrom:
                     configMapKeyRef:
