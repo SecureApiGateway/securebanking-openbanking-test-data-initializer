@@ -60,6 +60,7 @@ func main() {
 
 	//to obtain cookies values
 	httprest.InitRestReaderWriter(session.Cookie, session.AuthToken.AccessToken)
+	fmt.Println("Attempt to create PSU User..")
 	userId := rs.CreatePSU()
 	if common.Config.Environment.SapigType == "ob" {
 		fmt.Println("Attempt to populate RS Data..")
