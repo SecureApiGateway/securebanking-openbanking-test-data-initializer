@@ -16,11 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
       - name: Run Tests
         run: |
           make test-ci
-
   build:
     name: Build Image
     needs: check
@@ -40,7 +38,6 @@ jobs:
       - name: docker build
         run: |
           make docker tag=${{ env.PR_NUMBER }}
-
   deploy-ob:
     name: Deploy OB
     needs: build
@@ -54,7 +51,7 @@ jobs:
         with:
           args: '-v TAG=${{ env.PR_NUMBER }} -v ARGO_VALUES_PREFIX=testUserAccountCreator -v SERVICE_NAME=test-user-account-creator -v ENVIRONMENT=${{ env.GITHUB_USER }}-ob -v NEWBRANCH=${{ github.head_ref }}'
         env:
-          PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-ob-service-build'
+          PIPELINE_NAME: 'SAPIG-devenv/dev-ob-service-build'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           TRIGGER_NAME: github-actions-trigger-test-data
   deploy-core:
@@ -70,6 +67,6 @@ jobs:
         with:
           args: '-v TAG=${{ env.PR_NUMBER }} -v ARGO_VALUES_PREFIX=testUserAccountCreator -v SERVICE_NAME=test-user-account-creator -v ENVIRONMENT=${{ env.GITHUB_USER }}-core -v NEWBRANCH=${{ github.head_ref }}'
         env:
-          PIPELINE_NAME: 'ForgeCloud/sbat-infra/dev-core-service-build'
+          PIPELINE_NAME: 'SAPIG-devenv/dev-core-service-build'
           CF_API_KEY: ${{ secrets.CF_API_KEY }}
           TRIGGER_NAME: github-actions-trigger-test-data
