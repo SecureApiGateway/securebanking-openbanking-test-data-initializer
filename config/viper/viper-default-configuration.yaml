@@ -14,7 +14,7 @@ ENVIRONMENT: # Root key to define the environment program properties
   # CDK value: (Cloud Developer's Kit) development identity platform
   # CDM value: CDM (Cloud Deployment Model) identity cloud platform
   # FIDC (Forgerock Identity Cloud) identity cloud platform
-  TYPE: CDK
+  CLOUDTYPE: CDK
   NAMESPACE: dev # Root key to get the namespace/environment to populate the user data
   PATHS:
     CONFIG_AUTH_HELPER: config/defaults/auth-helper/  # Path for json to help with auth on FIdC platform

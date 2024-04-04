@@ -50,18 +50,17 @@ var config types.Configuration
 
 func main() {
 	// operations
-	checkValidPlatformCert()
-	session := getIdentityPlatformSession()
-
-	fmt.Println("Resty initialization....")
-
-	//get IDM auth code
-	session.Authenticate()
-
-	//to obtain cookies values
-	httprest.InitRestReaderWriter(session.Cookie, session.AuthToken.AccessToken)
-	fmt.Println("Attempt to create PSU User..")
-	userId := rs.CreatePSU()
+	if common.Config.Environment.CloudType == "CDK" {
+		checkValidPlatformCert()
+		session := getIdentityPlatformSession()		
+		fmt.Println("Resty initialization....")		
+		//get IDM auth code
+		session.Authenticate()		
+		//to obtain cookies values
+		httprest.InitRestReaderWriter(session.Cookie, session.AuthToken.AccessToken)
+		fmt.Println("Attempt to create PSU User..")
+		userId := rs.CreatePSU()
+	}
 	if common.Config.Environment.SapigType == "ob" {
 		fmt.Println("Attempt to populate RS Data..")
 		rs.PopulateRSData(userId)

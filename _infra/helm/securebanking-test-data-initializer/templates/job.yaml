@@ -20,7 +20,7 @@ spec:
               value: {{ .Values.job.environment.strict | quote }}
             - name: ENVIRONMENT.SAPIGTYPE
               value: {{ .Values.job.environment.sapigType }}
-            - name: ENVIRONMENT.TYPE
+            - name: ENVIRONMENT.CLOUDTYPE
               valueFrom:
                 configMapKeyRef:
                   name: core-deployment-config

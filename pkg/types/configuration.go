@@ -27,7 +27,7 @@ type identity struct {
 type environment struct {
 	Verbose   bool   `mapstructure:"VERBOSE"`
 	Strict    bool   `mapstructure:"STRICT"`
-	Type      string `mapstructure:"TYPE"`
+	CloudType string `mapstructure:"CLOUDTYPE"`
 	Paths     paths  `mapstructure:"PATHS"`
 	SapigType string `mapstructure:"SAPIGTYPE"`
 }
