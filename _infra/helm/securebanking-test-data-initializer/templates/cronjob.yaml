@@ -41,18 +41,7 @@ spec:
                     configMapKeyRef:
                       name: core-deployment-config
                       key: IDENTITY_PLATFORM_FQDN
-                {{- if eq .Values.cronjob.environment.frPlatformType "FIDC" }}
-                - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: initializer-secret
-                      key: cdm-admin-password
-                - name: USERS.FR_PLATFORM_ADMIN_USERNAME
-                  valueFrom:
-                    secretKeyRef:
-                      name: initializer-secret
-                      key: cdm-admin-user
-                {{- else }}
+                {{- if eq .Values.cronjob.environment.frPlatformType "CDK" }}
                 - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
