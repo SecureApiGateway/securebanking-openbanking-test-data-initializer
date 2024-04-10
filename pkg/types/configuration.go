@@ -33,11 +33,13 @@ type environment struct {
 }
 
 type users struct {
-	FrPlatformServiceAccountId  string `mapstructure:"FR_PLATFORM_SERVICE_ACCOUNT_ID"`
-	FrPlatformServiceAccountKey string `mapstructure:"FR_PLATFORM_SERVICE_ACCOUNT_KEY"`
-	PsuUserId                   string `mapstructure:"PSU_USER_ID"`
-	PsuUsername                 string `mapstructure:"PSU_USERNAME"`
-	PsuPassword                 string `mapstructure:"PSU_PASSWORD"`
+	CDKPlatformAdminUsername      string `mapstructure:"CDK_PLATFORM_ADMIN_USERNAME"`
+	CDKPlatformAdminPassword      string `mapstructure:"CDK_PLATFORM_ADMIN_PASSWORD"`
+	FIDCPlatformServiceAccountId  string `mapstructure:"FIDC_PLATFORM_SERVICE_ACCOUNT_ID"`
+	FIDCPlatformServiceAccountKey string `mapstructure:"FIDC_PLATFORM_SERVICE_ACCOUNT_KEY"`
+	PsuUserId                     string `mapstructure:"PSU_USER_ID"`
+	PsuUsername                   string `mapstructure:"PSU_USERNAME"`
+	PsuPassword                   string `mapstructure:"PSU_PASSWORD"`
 }
 
 type paths struct {

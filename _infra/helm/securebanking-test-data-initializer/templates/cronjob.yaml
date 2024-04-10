@@ -42,18 +42,18 @@ spec:
                       name: core-deployment-config
                       key: IDENTITY_PLATFORM_FQDN
                 {{- if eq .Values.cronjob.environment.frPlatformType "FIDC" }}
-                - name: USERS.FR_PLATFORM_SERVICE_ACCOUNT_KEY
+                - name: USERS.FIDC_PLATFORM_SERVICE_ACCOUNT_KEY
                   valueFrom:
                     secretKeyRef:
                       name: cloud-service-account
                       key: private-key
-                - name: USERS.FR_PLATFORM_SERVICE_ACCOUNT_ID
+                - name: USERS.FIDC_PLATFORM_SERVICE_ACCOUNT_ID
                   valueFrom:
                     secretKeyRef:
                       name: cloud-service-account
                       key: private-id
                 {{- else }}
-                - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
+                - name: USERS.CDK_PLATFORM_ADMIN_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: am-env-secrets

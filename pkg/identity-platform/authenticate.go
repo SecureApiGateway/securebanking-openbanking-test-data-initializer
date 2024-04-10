@@ -39,20 +39,15 @@ func FromUserSession(cookieName string) *common.Session {
 	zap.L().Info("Getting an admin session from Identity Platform")
 
 	path := ""
-	platformType := common.Config.Environment.CloudType
-	if platformType == "FIDC" {
-		path = fmt.Sprintf("https://%s/am/json/realms/root/authenticate", common.Config.Hosts.IdentityPlatformFQDN)
-	} else {
-		path = fmt.Sprintf("https://%s/am/json/realms/root/authenticate?authIndexType=service&authIndexValue=ldapService", common.Config.Hosts.IdentityPlatformFQDN)
-	}
-
+    path = fmt.Sprintf("https://%s/am/json/realms/root/authenticate?authIndexType=service&authIndexValue=ldapService", common.Config.Hosts.IdentityPlatformFQDN)
+	
 	zap.S().Infow("Path to authenticate the user", "path", path)
 
 	resp, err := restClient.R().
 		SetHeader("Accept", "application/json").
 		SetHeader("Accept-API-Version", "resource=2.0, protocol=1.0").
-		//SetHeader("X-OpenAM-Username", common.Config.Users.FrPlatformAdminUsername).
-		//SetHeader("X-OpenAM-Password", common.Config.Users.FrPlatformAdminPassword).
+		SetHeader("X-OpenAM-Username", common.Config.Users.CDKPlatformAdminUsername).
+		SetHeader("X-OpenAM-Password", common.Config.Users.CDKPlatformAdminPassword).
 		Post(path)
 
 	common.RaiseForStatus(err, resp.Error(), resp.StatusCode())
@@ -94,8 +89,8 @@ func GetServiceAccountToken() string {
 
 	zap.S().Infof("Getting token with service account")
 
-	serviceAccountId := common.Config.Users.FrPlatformServiceAccountId
-	serviceAccountKey := common.Config.Users.FrPlatformServiceAccountKey
+	serviceAccountId := common.Config.Users.FIDCPlatformServiceAccountId
+	serviceAccountKey := common.Config.Users.FIDCPlatformServiceAccountKey
 
 	if serviceAccountId == "" || serviceAccountKey == "" {
 		zap.S().Fatalw("Service account details not set.")
