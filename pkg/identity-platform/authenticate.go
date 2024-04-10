@@ -3,12 +3,13 @@ package platform
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/go-resty/resty/v2"
+	"github.com/go-jose/go-jose/v3"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
-	"io/ioutil"
 	"net/http"
 	"securebanking-test-data-initializer/pkg/common"
 	"securebanking-test-data-initializer/pkg/types"
+	"time"
 )
 
 func GetCookieNameFromAm() string {
@@ -36,31 +37,19 @@ func FromUserSession(cookieName string) *common.Session {
 	zap.L().Info("Getting an admin session from Identity Platform")
 
 	path := ""
-	platformType := common.Config.Environment.Type
-	if platformType == "FIDC" {
-		path = fmt.Sprintf("https://%s/am/json/realms/root/authenticate", common.Config.Hosts.IdentityPlatformFQDN)
-	} else {
-		path = fmt.Sprintf("https://%s/am/json/realms/root/authenticate?authIndexType=service&authIndexValue=ldapService", common.Config.Hosts.IdentityPlatformFQDN)
-	}
-
+	path = fmt.Sprintf("https://%s/am/json/realms/root/authenticate?authIndexType=service&authIndexValue=ldapService", common.Config.Hosts.IdentityPlatformFQDN)
+	
 	zap.S().Infow("Path to authenticate the user", "path", path)
 
 	resp, err := restClient.R().
 		SetHeader("Accept", "application/json").
 		SetHeader("Accept-API-Version", "resource=2.0, protocol=1.0").
-		SetHeader("X-OpenAM-Username", common.Config.Users.FrPlatformAdminUsername).
-		SetHeader("X-OpenAM-Password", common.Config.Users.FrPlatformAdminPassword).
+		SetHeader("X-OpenAM-Username", common.Config.Users.CDKPlatformAdminUsername).
+		SetHeader("X-OpenAM-Password", common.Config.Users.CDKPlatformAdminPassword).
 		Post(path)
 
 	common.RaiseForStatus(err, resp.Error(), resp.StatusCode())
 	zap.S().Infof("Got response code %v from %v", resp.StatusCode(), path)
-
-	if platformType == "FIDC" {
-		resp, err = dismiss2faDialog(path, resp)
-		if err != nil {
-			zap.S().Fatalw("Failed to dimiss 2FA as part of FIDC auth flow", "error", err)
-		}
-	}
 
 	var cookieValue = ""
 	for _, cookie := range resp.Cookies() {
@@ -94,41 +83,75 @@ func FromUserSession(cookieName string) *common.Session {
 	return s
 }
 
-func dismiss2faDialog(requestUri string, resp *resty.Response) (*resty.Response, error) {
-	bodyString := string(resp.Body()[:])
-	zap.S().Infof("Dismissing 2FA dialog as authing to FIDC. Auth response body is %v", bodyString)
+func GetServiceAccountToken() string {
+
+	zap.S().Infof("Getting token with service account")
+
+	serviceAccountId := common.Config.Users.FIDCPlatformServiceAccountId
+	serviceAccountKey := common.Config.Users.FIDCPlatformServiceAccountKey
+
+	if serviceAccountId == "" || serviceAccountKey == "" {
+		zap.S().Fatalw("Service account details not set.")
+	} else if serviceAccountId == "replaceme" || serviceAccountKey == "replaceme" {
+		zap.S().Fatalw("Service account details have not been overwritten from default values.")
+	}
+
+	serviceAccountKeyJWK := jose.JSONWebKey{}
+	serviceAccountKeyJWK.UnmarshalJSON([]byte(serviceAccountKey))
+
+	// Instantiate a signer using RS256 with the given private key.
+	signer, err := jose.NewSigner(jose.SigningKey{Algorithm: "RS256", Key: serviceAccountKeyJWK}, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	tokenEndpoint := fmt.Sprintf("https://%s/am/oauth2/access_token", common.Config.Hosts.IdentityPlatformFQDN)
+	const JWT_VALIDITY_SECONDS = 180
+
+	zap.S().Infof("Using token endpoint: %v", tokenEndpoint)
+
+	payload := types.JWTPayload{
+		ISS: serviceAccountId,
+		SUB: serviceAccountId,
+		AUD: tokenEndpoint,
+		JTI: uuid.NewString(),
+		EXP: time.Now().Unix() + JWT_VALIDITY_SECONDS,
+	}
+
+	payloadByte, err := json.Marshal(payload)
+	if err != nil {
+		panic(err)
+	}
+
+	jws, err := signer.Sign(payloadByte)
+	if err != nil {
+		panic(err)
+	}
+
+	jwt, err := jws.CompactSerialize()
+	if err != nil {
+		panic(err)
+	}
+
+	zap.S().Infof("Generated JWT for token request: %v", jwt)
+
+	resp, err := restClient.R().
+		SetFormData(map[string]string{
+			"grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+			"client_id":  "service-account",
+			"scope":      "fr:idm:* fr:am:* fr:idc:esv:*",
+			"assertion":  jwt,
+		}).
+		Post(tokenEndpoint)
+
+	//common.RaiseForStatus(err, resp.Error(), resp.StatusCode())
+	zap.S().Infof("Got response code %v from %v with body %v", resp.StatusCode(), tokenEndpoint, string(resp.Body()))
 
 	var responseJson map[string]interface{}
 	json.Unmarshal(resp.Body(), &responseJson)
-	authId := responseJson["authId"]
-	zap.S().Infof("authId to use in 2FA request: %v", authId)
+	token := responseJson["access_token"]
 
-	cookies := resp.Cookies()
+	zap.S().Infof("Got access token for service account: %v", token)
 
-	requestTemplate, erro := ioutil.ReadFile(common.Config.Environment.Paths.ConfigAuthHelper + "FidcDismiss2FA.json")
-	if erro != nil {
-		return nil, erro
-	}
-	var requestJson map[string]interface{}
-	json.Unmarshal(requestTemplate, &requestJson)
-	requestJson["authId"] = authId
-	zap.S().Infow("Request json used to dismiss 2FA", "requestJson", requestJson)
-
-	resp, err := restClient.R().
-		SetHeader("Accept", "application/json").
-		SetHeader("Accept-API-Version", "resource=2.1, protocol=1.0").
-		SetHeader("Content-Type", "application/json").
-		SetCookies(cookies).
-		SetBody(requestJson).
-		Post(requestUri)
-
-	if err != nil {
-		zap.S().Warnf("Failed to dismiss 2FA. ErrorCode %v", resp.StatusCode())
-		return nil, err
-	} else {
-		var jsonMap map[string]interface{}
-		json.Unmarshal(resp.Body(), &jsonMap)
-		zap.S().Infof("Dismissed 2FA - statusCode: %v,  %v", resp.StatusCode(), jsonMap)
-		return resp, nil
-	}
+	return fmt.Sprintf("%v", token)
 }
