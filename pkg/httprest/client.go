@@ -42,10 +42,13 @@ func (r *RestClient) GetRS(path string, headers map[string]string) ([]byte, int)
 }
 
 func (r *RestClient) request(headers map[string]string) *resty.Request {
-	return r.Resty.R().
-		SetHeaders(headers).
-		SetCookie(r.Cookie).
-		SetAuthToken(r.AuthCode)
+	request := r.Resty.R()
+	request.SetHeaders(headers)
+	request.SetAuthToken(r.AuthCode)
+	if r.Cookie != nil {
+		request.SetCookie(r.Cookie)
+	}
+	return request
 }
 
 func (r *RestClient) Post(path string, ob interface{}, headers map[string]string) ([]byte, int) {

@@ -61,6 +61,9 @@ func (s *Session) GetIDMAdminAuthCode() {
 	if err != nil {
 		zap.S().Fatalw("Error parsing location header", "statusCode", resp.StatusCode(), "error", err)
 	}
+	if v == nil {
+		zap.S().Fatalw("Error parsing location header, location empty")
+	} 
 	zap.S().Infow("Got Location header from IDM", "Location", v)
 	authCode := v["https://"+Config.Hosts.IdentityPlatformFQDN+"/platform/appAuthHelperRedirect.html?code"][0]
 	s.authCode = authCode

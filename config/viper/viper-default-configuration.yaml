@@ -14,7 +14,7 @@ ENVIRONMENT: # Root key to define the environment program properties
   # CDK value: (Cloud Developer's Kit) development identity platform
   # CDM value: CDM (Cloud Deployment Model) identity cloud platform
   # FIDC (Forgerock Identity Cloud) identity cloud platform
-  TYPE: CDK
+  CLOUDTYPE: CDKs
   NAMESPACE: dev # Root key to get the namespace/environment to populate the user data
   PATHS:
     CONFIG_AUTH_HELPER: config/defaults/auth-helper/  # Path for json to help with auth on FIdC platform
@@ -25,8 +25,8 @@ HOSTS:
 IDENTITY: # Root key for parameter values related with identity platform configuration
   AM_REALM: alpha # The realm used for secure banking
 USERS: # Root key users to be created or to authenticate and authorize flows
-  FR_PLATFORM_ADMIN_USERNAME: amadmin # Identity platform Username with admin grants (must exist previously)
-  FR_PLATFORM_ADMIN_PASSWORD: replace-me # Identity platform User password with admin grants (must exist previously)
+  FR_PLATFORM_SERVICE_ACCOUNT_ID: replace-me # Service Account ID (must exist previously)
+  FR_PLATFORM_SERVICE_ACCOUNT_KEY: replace-me # Service Account Private Key (must exist previously)
   PSU_USER_ID: 4737f9f9-fa0a-4159-bc61-7da31542e624 # Psu User Id to (It will be created): needs to be a UUID
   PSU_USERNAME: psu4test # Psu Username to (It will be created)
   PSU_PASSWORD: 0penBanking! # Psu user password (It will be created)

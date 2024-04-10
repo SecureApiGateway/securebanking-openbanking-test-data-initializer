@@ -31,7 +31,7 @@ func CreatePSU() string {
 	}
 	// TODO: check the managed user object, it's different for cloud
 	var managedUserObject = "user"
-	if common.Config.Environment.Type == types.Platform.Instance().FIDC {
+	if common.Config.Environment.CloudType == types.Platform.Instance().FIDC {
 		managedUserObject = common.Config.Identity.AmRealm + "_user"
 	}
 	path := "/openidm/managed/" + managedUserObject + "/?_action=create"

@@ -20,7 +20,7 @@ spec:
               value: {{ .Values.job.environment.strict | quote }}
             - name: ENVIRONMENT.SAPIGTYPE
               value: {{ .Values.job.environment.sapigType }}
-            - name: ENVIRONMENT.TYPE
+            - name: ENVIRONMENT.CONFIGTYPE
               valueFrom:
                 configMapKeyRef:
                   name: core-deployment-config
@@ -36,16 +36,16 @@ spec:
                   name: core-deployment-config
                   key: IDENTITY_PLATFORM_FQDN
             {{- if eq .Values.job.environment.frPlatformType "FIDC" }}
-            - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
+            - name: USERS.FR_PLATFORM_SERVICE_ACCOUNT_KEY
               valueFrom:
                 secretKeyRef:
-                  name: initializer-secret
-                  key: cdm-admin-password
-            - name: USERS.FR_PLATFORM_ADMIN_USERNAME
+                  name: cloud-service-account
+                  key: private-key
+            - name: USERS.FR_PLATFORM_SERVICE_ACCOUNT_ID
               valueFrom:
                 secretKeyRef:
-                  name: initializer-secret
-                  key: cdm-admin-user
+                  name: cloud-service-account
+                  key: private-id
             {{- else }}
             - name: USERS.FR_PLATFORM_ADMIN_PASSWORD
               valueFrom:
