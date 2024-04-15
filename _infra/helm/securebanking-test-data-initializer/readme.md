@@ -47,7 +47,7 @@ spec:
           env:
             - name: ENVIRONMENT.STRICT
               value: "true"
-            - name: ENVIRONMENT.TYPE
+            - name: ENVIRONMENT.CLOUDTYPE
               valueFrom:
                 configMapKeyRef:
                   name: core-deployment-config
@@ -114,7 +114,7 @@ spec:
               env:
                 - name: ENVIRONMENT.STRICT
                   value: "true"
-                - name: ENVIRONMENT.TYPE
+                - name: ENVIRONMENT.CLOUDTYPE
                   valueFrom:
                     configMapKeyRef:
                       name: core-deployment-config
@@ -161,22 +161,22 @@ These are the environment variables declared in the `job.yaml` ;
 | Key | Default | Description | Source | Optional |
 |-----|---------|-------------|--------|----------|
 | ENVIRONMENT.STRICT | true | If true, any errors will cause the job to exit | cronjob.environment.strict |
-| ENVIRONMENT.TYPE | FIDC | Type of Cloud Instance being ran, depends on what environment you are running | core-deployment-config |
+| ENVIRONMENT.CLOUDTYPE | FIDC | Type of Cloud Instance being ran, depends on what environment you are running | core-deployment-config |
 | IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | core-deployment-config |
 | HOSTS.IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | core-deployment-config |
-| USERS.FR_PLATFORM_ADMIN_PASSWORD | | Password for cloud instance. NOTE - This password can be used for `initializer-secret` or `am-env-secrets` depending on `ENVIRONMENT.TYPE` set | If `ENVIRONMENT.TYPE=FIDC` initializer-secret/cdm-admin-password else am-env-secrets/AM_PASSWORDS_AMADMIN_CLEAR |
-| USERS.FR_PLATFORM_ADMIN_USERNAME | | Username for cloud instance, only populated if `ENVIRONMENT.TYPE=FIDC` | initializer-secret/cdm-admin-user |
+| USERS.FR_PLATFORM_ADMIN_PASSWORD | | Password for cloud instance. NOTE - This password can be used for `initializer-secret` or `am-env-secrets` depending on `ENVIRONMENT.CLOUDTYPE` set | If `ENVIRONMENT.CLOUDTYPE=FIDC` initializer-secret/cdm-admin-password else am-env-secrets/AM_PASSWORDS_AMADMIN_CLEAR |
+| USERS.FR_PLATFORM_ADMIN_USERNAME | | Username for cloud instance, only populated if `ENVIRONMENT.CLOUDTYPE=FIDC` | initializer-secret/cdm-admin-user |
 | NAMESPACE | dev | The namespace to install the object in | job.namespace |
 
 These are the environment variables declared in the `cronjob.yaml` ;
 | Key | Default | Description | Source | Optional |
 |-----|---------|-------------|--------|----------|
 | ENVIRONMENT.STRICT | true | If true, any errors will cause the job to exit | cronjob.environment.strict |
-| ENVIRONMENT.TYPE | FIDC | Type of Cloud Instance being ran, depends on what environment you are running | core-deployment-config |
+| ENVIRONMENT.CLOUDTYPE | FIDC | Type of Cloud Instance being ran, depends on what environment you are running | core-deployment-config |
 | IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | core-deployment-config |
 | HOSTS.IDENTITY_PLATFORM_FQDN | iam.forgerock.financial | Custom Domain created in Cloud Instance | core-deployment-config |
-| USERS.FR_PLATFORM_ADMIN_PASSWORD | | Password for cloud instance. NOTE - This password can be used for `initializer-secret` or `am-env-secrets` depending on `ENVIRONMENT.TYPE` set | If `ENVIRONMENT.TYPE=FIDC` initializer-secret/cdm-admin-password else am-env-secrets/AM_PASSWORDS_AMADMIN_CLEAR |
-| USERS.FR_PLATFORM_ADMIN_USERNAME | | Username for cloud instance, only populated if `ENVIRONMENT.TYPE=FIDC` | initializer-secret/cdm-admin-user |
+| USERS.FR_PLATFORM_ADMIN_PASSWORD | | Password for cloud instance. NOTE - This password can be used for `initializer-secret` or `am-env-secrets` depending on `ENVIRONMENT.CLOUDTYPE` set | If `ENVIRONMENT.CLOUDTYPE=FIDC` initializer-secret/cdm-admin-password else am-env-secrets/AM_PASSWORDS_AMADMIN_CLEAR |
+| USERS.FR_PLATFORM_ADMIN_USERNAME | | Username for cloud instance, only populated if `ENVIRONMENT.CLOUDTYPE=FIDC` | initializer-secret/cdm-admin-user |
 | NAMESPACE | dev | The namespace to install the object in | job.namespace |
 
 ### Values
