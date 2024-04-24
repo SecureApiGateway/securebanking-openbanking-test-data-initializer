@@ -1,72 +1,17 @@
-name: Pull Request - Build and Deploy
-
+name: PR - Build and Deploy
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
     paths-ignore:
-      - README.md
-
-env:
-  SERVICE_NAME: test-user-account-creator
-  PR_NUMBER: pr-${{ github.event.number }}
+      - '**/README.md'
+      - '_infra/helm/**'
 
 jobs:
-  check:
-    name: Check Changes
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Run Tests
-        run: |
-          make test-ci
-  build:
-    name: Build Image
-    needs: check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Auth to GCP  
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.DEV_GAR_KEY }}
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v2.1.0
-        # Configure docker to use the gcloud command-line tool as a credential helper
-      - name: Auth Docker
-        run: |
-          gcloud auth configure-docker europe-west4-docker.pkg.dev
-      - name: docker build
-        run: |
-          make docker tag=${{ env.PR_NUMBER }}
-  deploy-ob:
-    name: Deploy OB
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create lowercase Github Username
-        run: echo "GITHUB_USER=$(echo ${{github.actor}} | tr '[:upper:]' '[:lower:]')" >> ${GITHUB_ENV}
-      - name: 'Deploy Service to OB'
-        uses: codefresh-io/codefresh-pipeline-runner@master
-        if: github.actor != 'dependabot[bot]'
-        with:
-          args: '-v TAG=${{ env.PR_NUMBER }} -v ARGO_VALUES_PREFIX=testUserAccountCreator -v SERVICE_NAME=test-user-account-creator -v ENVIRONMENT=${{ env.GITHUB_USER }}-ob -v NEWBRANCH=${{ github.head_ref }}'
-        env:
-          PIPELINE_NAME: 'SAPIG-devenv/dev-ob-service-build'
-          CF_API_KEY: ${{ secrets.CF_API_KEY }}
-          TRIGGER_NAME: github-actions-trigger-test-data
-  deploy-core:
-    name: Deploy Core
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create lowercase Github Username
-        run: echo "GITHUB_USER=$(echo ${{github.actor}} | tr '[:upper:]' '[:lower:]')" >> ${GITHUB_ENV}
-      - name: 'Deploy Service to Core'
-        uses: codefresh-io/codefresh-pipeline-runner@master
-        if: github.actor != 'dependabot[bot]'
-        with:
-          args: '-v TAG=${{ env.PR_NUMBER }} -v ARGO_VALUES_PREFIX=testUserAccountCreator -v SERVICE_NAME=test-user-account-creator -v ENVIRONMENT=${{ env.GITHUB_USER }}-core -v NEWBRANCH=${{ github.head_ref }}'
-        env:
-          PIPELINE_NAME: 'SAPIG-devenv/dev-core-service-build'
-          CF_API_KEY: ${{ secrets.CF_API_KEY }}
-          TRIGGER_NAME: github-actions-trigger-test-data
+  run_pr-template:
+    name: PR - Build and Deploy
+    uses: SecureApiGateway/secure-api-gateway-ci/.github/workflows/reusable-pr.yml@main
+    secrets: inherit
+    with:
+      componentName: secure-api-gateway-ob-uk-test-data-initializer
+      dockerTag: pr-${{ github.event.number }}

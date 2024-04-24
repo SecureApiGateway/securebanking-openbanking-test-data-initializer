@@ -1,4 +1,4 @@
-name := securebanking-test-data-initializer
+service := securebanking-test-data-initializer
 repo := europe-west4-docker.pkg.dev/sbat-gcr-develop/sapig-docker-artifact
 helm_repo := forgerock-helm/secure-api-gateway/securebanking-test-data-initializer/
 
@@ -27,17 +27,26 @@ ifndef tag
 	$(warning No tag supplied, latest assumed. supply tag with make docker tag=x.x.x service=...)
 	$(eval tag=latest)
 endif
+ifndef setlatest
+	$(warning no setlatest true|false supplied; false assumed)
+	$(eval setlatest=false)
+endif
 	env GOOS=linux GOARCH=amd64 go build -o initialize
-	docker buildx build --platform linux/amd64 -t ${repo}/securebanking/${name}:${tag} .
-	docker push ${repo}/securebanking/${name}:${tag}
+	if [ "${setlatest}" = "true" ]; then \
+		docker buildx build --platform linux/amd64 -t ${repo}/securebanking/${service}:${tag} -t ${repo}/securebanking/${service}:latest . ; \
+		docker push ${repo}/securebanking/${service} --all-tags; \
+    else \
+   		docker buildx build --platform linux/amd64 -t ${repo}/securebanking/${service}:${tag} . ; \
+   		docker push ${repo}/securebanking/${service}:${tag}; \
+   	fi;
 
 package_helm:
 ifndef version
 	$(error A version must be supplied, Eg. make helm version=1.0.0)
 endif
-	helm dependency update _infra/helm/${name}
-	helm template _infra/helm/${name}
-	helm package _infra/helm/${name} --version ${version} --app-version ${version}
+	helm dependency update _infra/helm/${service}
+	helm template _infra/helm/${service}
+	helm package _infra/helm/${service} --version ${version} --app-version ${version}
 
 publish_helm:
 ifndef version
