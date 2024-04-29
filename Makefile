@@ -24,15 +24,17 @@ clean:
 
 docker: clean mod
 ifndef tag
-	$(warning No tag supplied, latest assumed. supply tag with make docker tag=x.x.x service=...)
-	$(eval tag=latest)
+	$(warning no tag supplied; latest assumed)
+	$(eval TAG=latest)
+else
+	$(eval TAG=$(shell echo $(tag) | tr A-Z a-z))
 endif
 ifndef setlatest
 	$(warning no setlatest true|false supplied; false assumed)
 	$(eval setlatest=false)
 endif
 	env GOOS=linux GOARCH=amd64 go build -o initialize
-	if [ "${setlatest}" = "true" ]; then \
+	@if [ "${setlatest}" = "true" ]; then \
 		docker buildx build --platform linux/amd64 -t ${repo}/securebanking/${service}:${tag} -t ${repo}/securebanking/${service}:latest . ; \
 		docker push ${repo}/securebanking/${service} --all-tags; \
     else \
