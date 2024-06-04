@@ -25,7 +25,10 @@ spec:
                 - name: ENVIRONMENT.STRICT
                   value: {{ .Values.cronjob.environment.strict | quote }}
                 - name: ENVIRONMENT.SAPIGTYPE
-                  value: {{ .Values.cronjob.environment.sapigType }}
+                  valueFrom:
+                    configMapKeyRef:
+                      name: core-deployment-config
+                      key: SAPIG_TYPE
                 - name: ENVIRONMENT.CLOUDTYPE
                   valueFrom:
                     configMapKeyRef:
