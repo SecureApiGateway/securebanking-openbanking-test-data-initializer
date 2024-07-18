@@ -1,6 +1,7 @@
 service := securebanking-test-data-initializer
 repo := europe-west4-docker.pkg.dev/sbat-gcr-develop/sapig-docker-artifact
 helm_repo := forgerock-helm/secure-api-gateway/securebanking-test-data-initializer/
+latesttagversion := latest
 
 .PHONY: all
 all: mod build
@@ -35,7 +36,7 @@ ifndef setlatest
 endif
 	env GOOS=linux GOARCH=amd64 go build -o initialize
 	@if [ "${setlatest}" = "true" ]; then \
-		docker buildx build --platform linux/amd64 -t ${repo}/securebanking/${service}:${tag} -t ${repo}/securebanking/${service}:latest . ; \
+		docker buildx build --platform linux/amd64 -t ${repo}/securebanking/${service}:${tag} -t ${repo}/securebanking/${service}:${latesttagversion} . ; \
 		docker push ${repo}/securebanking/${service} --all-tags; \
     else \
    		docker buildx build --platform linux/amd64 -t ${repo}/securebanking/${service}:${tag} . ; \
