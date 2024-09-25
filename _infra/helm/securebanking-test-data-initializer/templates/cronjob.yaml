@@ -44,6 +44,11 @@ spec:
                     configMapKeyRef:
                       name: core-deployment-config
                       key: IDENTITY_PLATFORM_FQDN
+                - name: IDENTITY.AM_REALM
+                  valueFrom:
+                    configMapKeyRef:
+                      name: core-deployment-config
+                      key: AM_REALM
                 {{- if eq .Values.cronjob.environment.cloudType "FIDC" }}
                 - name: USERS.FIDC_PLATFORM_SERVICE_ACCOUNT_KEY
                   valueFrom:
