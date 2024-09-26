@@ -15,7 +15,7 @@ import (
 func CreatePSU() string {
 	exist, userId := identityExists(common.Config.Users.PsuUsername)
 	if exist {
-		zap.S().Infof("Skipping creation of Payment Services User", "userID", userId)
+		zap.S().Infof("Account found, skipping creation of Payment Services User", "userID", userId)
 		return userId
 	}
 
