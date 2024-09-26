@@ -3,6 +3,7 @@ package platform
 import (
 	"encoding/json"
 	"fmt"
+        "github.com/go-jose/go-jose/v3"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"net/http"
