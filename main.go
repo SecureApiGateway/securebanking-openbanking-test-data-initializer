@@ -67,9 +67,9 @@ func main() {
 		zap.S().Fatalw("Unrecognised CloudType")
 	}
 
-	fmt.Println("Attempt to create PSU User..")
+	fmt.Println("Checking if PSU User needs to be created..")
 	userId := rs.CreatePSU()
-	
+
 	if common.Config.Environment.SapigType == "ob" {
 		fmt.Println("Attempt to populate RS Data..")
 		rs.PopulateRSData(userId)
