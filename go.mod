@@ -3,6 +3,7 @@ module securebanking-test-data-initializer
 go 1.16
 
 require (
+    gopkg.in/go-jose/go-jose.v2 v2.6.1
 	github.com/go-jose/go-jose/v3 v3.0.3
 	github.com/go-resty/resty/v2 v2.12.0
 	github.com/google/uuid v1.6.0
