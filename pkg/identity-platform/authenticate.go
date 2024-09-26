@@ -3,7 +3,6 @@ package platform
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/go-jose/go-jose/v3"
 	"github.com/google/uuid"
 	"go.uber.org/zap"
 	"net/http"
@@ -32,13 +31,14 @@ func GetCookieNameFromAm() string {
 }
 
 // FromUserSession - get a session token from AM for authentication
-//    returns the Session object with embedded session cookie
+//
+//	returns the Session object with embedded session cookie
 func FromUserSession(cookieName string) *common.Session {
 	zap.L().Info("Getting an admin session from Identity Platform")
 
 	path := ""
 	path = fmt.Sprintf("https://%s/am/json/realms/root/authenticate?authIndexType=service&authIndexValue=ldapService", common.Config.Hosts.IdentityPlatformFQDN)
-	
+
 	zap.S().Infow("Path to authenticate the user", "path", path)
 
 	resp, err := restClient.R().
@@ -144,7 +144,7 @@ func GetServiceAccountToken() string {
 		}).
 		Post(tokenEndpoint)
 
-	//common.RaiseForStatus(err, resp.Error(), resp.StatusCode())
+	common.RaiseForStatus(err, resp.Error(), resp.StatusCode())
 	zap.S().Infof("Got response code %v from %v with body %v", resp.StatusCode(), tokenEndpoint, string(resp.Body()))
 
 	var responseJson map[string]interface{}
