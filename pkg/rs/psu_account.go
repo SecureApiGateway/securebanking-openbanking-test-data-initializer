@@ -15,11 +15,11 @@ import (
 func CreatePSU() string {
 	exist, userId := identityExists(common.Config.Users.PsuUsername)
 	if exist {
-		zap.S().Infow("Skipping creation of Payment Services User", "userID", userId)
+		zap.S().Infof("Skipping creation of Payment Services User", "userID", userId)
 		return userId
 	}
 
-	zap.L().Info("Creating PSU (Payment Services User)")
+	zap.S().Infof("Creating PSU (Payment Services User)")
 
 	user := &PSU{
 		UserId:    common.Config.Users.PsuUserId,
